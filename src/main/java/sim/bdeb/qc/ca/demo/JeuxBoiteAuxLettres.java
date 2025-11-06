@@ -1,17 +1,17 @@
 package sim.bdeb.qc.ca.demo;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class JeuxBoiteAuxLettres extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        HBox root = new HBox(900);
+        Scene scene = new Scene(root, 900, 580);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
