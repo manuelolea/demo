@@ -27,7 +27,7 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("sim.bdeb.qc.ca.demo")
-    mainClass.set("sim.bdeb.qc.ca.demo.HelloApplication")
+    mainClass.set("sim.bdeb.qc.ca.demo.JeuxBoiteAuxLettres")
 }
 
 javafx {
