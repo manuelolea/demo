@@ -2,7 +2,7 @@ package sim.bdeb.qc.ca.demo;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class Fenetres extends ObjetJeux{
+public class CameraJeu extends ObjetJeux{
 
     @Override
     public void draw(GraphicsContext context, double largeurDecor, double hauteurDecor, CameraJeu camera) {

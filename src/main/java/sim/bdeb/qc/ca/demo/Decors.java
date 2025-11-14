@@ -1,5 +1,6 @@
 package sim.bdeb.qc.ca.demo;
 
+import sim.bdeb.qc.ca.demo.CameraJeu;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -7,22 +8,47 @@ import javafx.scene.paint.Color;
 public class Decors extends ObjetJeux {
 
     private Image brique;
-    private double hauteurInterface;
-    private double largueurInterface;
-    private Camera camera;
+    private double hauteurDecor;
+    private double largueurDecor;
+    private CameraJeu camera;
 
-    public Decors() {
+
+    public Decors(double largueurDecor, double hauteurDecor, CameraJeu camera) {
         this.brique = new Image("brique.png");
-        this.hauteurInterface = hauteurInterface;
-        this.largueurInterface = largueurInterface;
+        this.hauteurDecor = hauteurDecor;
+        this.largueurDecor = largueurDecor;
         this.camera = camera;
-
-
     }
 
-    public static void afficherDecor(GraphicsContext context, double largeurInterface, double hauteurInterface){
-    context.setFill(Color.BLACK);
-    context.fillRect(0,0,largeurInterface,hauteurInterface);
 
+    public Image getBrique() {
+        return brique;
     }
+    @Override
+    public void draw(GraphicsContext context, double largeurDecor, double hauteurDecor, CameraJeu camera){
+        context.setFill(Color.BLACK);
+        context.fillRect(0,0,largeurDecor,hauteurDecor);
+
+        double largueurBrique = brique.getWidth();
+        double hauteurBrique = brique.getHeight();
+        //double positionCameraX = camera.getPositionX();
+
+        //double decalageCameraX = positionCameraX % largueurBrique;
+
+        int nbBriqueX = (int) Math.ceil(largeurDecor/largueurBrique) + 1;
+        int nbBriqueY = (int) Math.ceil(hauteurDecor/hauteurBrique) + 1;
+
+        for (int i = 0; i < nbBriqueX ; i++) {
+            for (int j = 0; j < nbBriqueY ; j++) {
+                double x = i * largueurBrique; //- decalageCameraX;
+                double y = j * hauteurBrique;
+
+                context.drawImage(getBrique(), x, y);
+            }
+        }
+    }
+
+    @Override
+    public void update(){}
+
 }
