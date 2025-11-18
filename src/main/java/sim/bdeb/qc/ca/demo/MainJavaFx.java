@@ -1,5 +1,6 @@
 package sim.bdeb.qc.ca.demo;
 
+import javafx.animation.AnimationTimer;
 import sim.bdeb.qc.ca.demo.Decors;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,11 +20,21 @@ public class MainJavaFx extends Application {
 
         HBox root = new HBox(largueurScene);
         Scene scene = new Scene(root, largueurScene, hauteurScene);
-        Canvas canvas = new Canvas();
+        Canvas canvas = new Canvas(largueurScene,hauteurScene);
+        root.getChildren().add(canvas);
         var context = canvas.getGraphicsContext2D();
-       // Camera
-     //   Decors decorsMain = new Decors(largueurScene,hauteurScene,camera)
 
+         //creation camera jex et decors a mettre plus tard dans la classe partie
+        CameraJeu camera1 = new CameraJeu(0,0,largueurScene,hauteurScene);
+        Decors decors1 = new Decors(camera1);
+
+        decors1.draw(context,camera1);
+        AnimationTimer animationJeux = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                decors1.update();
+            }
+        };
 
         Image iconFenetre = new Image("journal.png");
         stage.getIcons().add(iconFenetre);
