@@ -8,15 +8,11 @@ import javafx.scene.paint.Color;
 public class Decors extends ObjetJeux {
 
     private Image brique;
-    private double hauteurDecor;
-    private double largueurDecor;
     private CameraJeu camera;
 
 
-    public Decors(double largueurDecor, double hauteurDecor, CameraJeu camera) {
+    public Decors( CameraJeu camera) {
         this.brique = new Image("brique.png");
-        this.hauteurDecor = hauteurDecor;
-        this.largueurDecor = largueurDecor;
         this.camera = camera;
     }
 
@@ -34,8 +30,8 @@ public class Decors extends ObjetJeux {
         //double positionCameraX = camera.getPositionX();
 
         //double decalageCameraX = positionCameraX % largueurBrique;
-        int nbBriqueX = (int) Math.ceil(largueurDecor/largueurBrique) + 1;
-        int nbBriqueY = (int) Math.ceil(hauteurDecor/hauteurBrique) + 1;
+        int nbBriqueX = (int) Math.ceil(camera.getLongeureEcran()/largueurBrique) + 1;
+        int nbBriqueY = (int) Math.ceil(camera.getHauteureEcran()/hauteurBrique) + 1;
 
         for (int i = 0; i < nbBriqueX ; i++) {
             for (int j = 0; j < nbBriqueY ; j++) {
