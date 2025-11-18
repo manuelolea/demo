@@ -2,13 +2,32 @@ package sim.bdeb.qc.ca.demo;
 
 import javafx.scene.canvas.GraphicsContext;
 
-public class CameraJeu extends ObjetJeux{
+public class CameraJeu{
+private double positionX;
+private double positionY;
+private double longeureEcran;
+private double hauteureEcran;
 
-    @Override
-    public void draw(GraphicsContext context, double largeurDecor, double hauteurDecor, CameraJeu camera) {
-
+    public CameraJeu(double positionX, double positionY, double longeureEcran, double hauteureEcran) {
+        this.positionX = positionX;
+        this.positionY = positionY;
+        this.longeureEcran = longeureEcran;
+        this.hauteureEcran = hauteureEcran;
     }
 
-    @Override
-    public void update(){}
+    public double getPositionX() {
+        return positionX;
+    }
+
+    public double getPositionY() {
+        return positionY;
+    }
+
+    public double getLongeureEcran() {
+        return longeureEcran;
+    }
+
+    public double getHauteureEcran() {
+        return hauteureEcran;
+    }
 }

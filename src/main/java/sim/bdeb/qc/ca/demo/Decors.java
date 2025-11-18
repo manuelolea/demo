@@ -25,17 +25,16 @@ public class Decors extends ObjetJeux {
         return brique;
     }
     @Override
-    public void draw(GraphicsContext context, double largeurDecor, double hauteurDecor, CameraJeu camera){
+    public void draw(GraphicsContext context, CameraJeu camera){
         context.setFill(Color.BLACK);
-        context.fillRect(0,0,largeurDecor,hauteurDecor);
+        context.fillRect(0,0,camera.getLongeureEcran(), camera.getHauteureEcran());
 
         double largueurBrique = brique.getWidth();
         double hauteurBrique = brique.getHeight();
         //double positionCameraX = camera.getPositionX();
 
         //double decalageCameraX = positionCameraX % largueurBrique;
-
-        int nbBriqueX = (int) Math.ceil(largeurDecor/largueurBrique) + 1;
+        int nbBriqueX = (int) Math.ceil(largueurDecor/largueurBrique) + 1;
         int nbBriqueY = (int) Math.ceil(hauteurDecor/hauteurBrique) + 1;
 
         for (int i = 0; i < nbBriqueX ; i++) {
