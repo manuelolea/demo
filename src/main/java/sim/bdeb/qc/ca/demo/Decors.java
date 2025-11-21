@@ -8,12 +8,12 @@ import javafx.scene.paint.Color;
 public class Decors extends ObjetJeux {
 
     private Image brique;
-    private CameraJeu camera;
 
 
-    public Decors( CameraJeu camera) {
+
+    public Decors() {
         this.brique = new Image("brique.png");
-        this.camera = camera;
+
     }
 
 
