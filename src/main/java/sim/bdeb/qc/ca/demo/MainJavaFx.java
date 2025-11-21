@@ -30,7 +30,7 @@ public class MainJavaFx extends Application {
 
          //creation camera jex et decors a mettre plus tard dans la classe partie
         CameraJeu camera1 = new CameraJeu(0,0,largueurScene,hauteurScene);
-        Decors decors1 = new Decors(camera1);
+        Decors decors1 = new Decors();
 
         decors1.draw(context,camera1);
         Camelot camelot = new Camelot(180,436);
