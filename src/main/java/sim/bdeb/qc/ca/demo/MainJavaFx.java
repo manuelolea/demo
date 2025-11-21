@@ -24,15 +24,23 @@ public class MainJavaFx extends Application {
         root.getChildren().add(canvas);
         var context = canvas.getGraphicsContext2D();
 
+        //Test classe input
+        Input input = new Input();
+        Input.initialiser(scene);
+
          //creation camera jex et decors a mettre plus tard dans la classe partie
         CameraJeu camera1 = new CameraJeu(0,0,largueurScene,hauteurScene);
         Decors decors1 = new Decors(camera1);
 
         decors1.draw(context,camera1);
+        Camelot camelot = new Camelot(180,436);
+        camelot.draw(context,camera1);
+
         AnimationTimer animationJeux = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 decors1.update();
+                camelot.update();
             }
         };
 

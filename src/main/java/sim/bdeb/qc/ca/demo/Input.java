@@ -3,32 +3,44 @@ package sim.bdeb.qc.ca.demo;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
 public class Input {
-    private static Set<KeyCode> touches = new HashSet<>();
+    public static boolean gauche = false;
+    public static boolean droite = false;
+    public static boolean saut = false;
+
+    public static boolean lancerHaut = false;
+    public static boolean lancerDroit = false;
+    public static boolean force = false;
 
     public static void initialiser(Scene scene) {
 
-        scene.setOnKeyPressed(event -> {
-            setKeyPressed(event.getCode(), true);
+        scene.setOnKeyPressed(e -> {
+            KeyCode code = e.getCode();
+            switch (code){
+                case LEFT -> gauche = true;
+                case RIGHT -> droite =true;
+                case SPACE,UP -> saut = true;
+
+                case Z -> lancerHaut = true;
+                case X -> lancerDroit = true;
+
+                case SHIFT -> force = true;
+            }
         });
 
-        scene.setOnKeyReleased(event -> {
-            setKeyPressed(event.getCode(), false);
-        });
-    }
+        scene.setOnKeyReleased(e -> {
+            KeyCode code = e.getCode();
+            switch (code){
+                case LEFT -> gauche = false;
+                case RIGHT -> droite = false;
+                case SPACE,UP -> saut = false;
 
-    public static boolean isKeyPressed(KeyCode code){
-     return touches.contains(code);
-    }
-     public static void setKeyPressed(KeyCode code, boolean appuie){
-         if (appuie) {
-             touches.add(code);
-         } else {
-             touches.remove(code);
-         }
+                case Z -> lancerHaut = false;
+                case X -> lancerDroit = false;
+
+                case SHIFT -> force = false;
+            }
+        });
+
      }
 }

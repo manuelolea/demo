@@ -6,8 +6,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Camelot extends ObjetJeux{
-    private Image camelot1 = new Image("camelot1");
-    private Image camelot2 = new Image("camelot2");
+    private Image camelot1 = new Image("camelot1.png");
+    private Image camelot2 = new Image("camelot2.png");
 
     private static double vitesseInitial = 400;
     private static double accel = 300;
@@ -43,9 +43,69 @@ public class Camelot extends ObjetJeux{
 
     @Override
     public void draw(GraphicsContext context,  CameraJeu camera) {
+    int index = (int) ((temps * 4) % 2);
 
+    Image img;
+    if (index == 0){
+        img = camelot1;
+    }else {
+        img = camelot2;
+    }
+    double ecranX = position.getX() - camera.getPositionX();
+    double ecranY = position.getY();
+    context.drawImage(img, ecranX, ecranY);
     }
 
     @Override
-    public void update(){}
+    public void update(){
+        if (dt <= 0){
+            return;
+    }
+    temps += dt;
+
+    double vx = vitesse.getX();
+    double vy = vitesse.getY();
+
+    boolean gauche = input.gauche;
+    boolean droite = input.droite;
+    boolean saut = input.saut;
+
+    if(gauche){
+        vx -= accel * dt;
+
+    } else if (droite){
+        vx += accel * dt;
+
+    }else{
+        if (vx < vitesseInitial){
+            vx += accel * dt;
+
+        } else if (vx > vitesseInitial) {
+            vx -= accel * dt;
+            
+        }
+    }
+
+    if (vx < vitesseMin){
+        vx = vitesseMin;
+    }
+
+    if (vx >  vitesseMax){
+        vx = vitesseMax;
+    }
+    boolean sol = (position.getX() >= 400);
+
+    if(saut && sol){
+        vy = -500;
+    }
+    vy += gravite * dt;
+
+    vitesse = new Point2D(vx, vy);
+    position = position.add(vitesse.multiply(dt));
+
+    if (position.getX() > 400) {
+        position = new Point2D(position.getX(), 400);
+        vitesse = new Point2D(vitesse.getX(), 0);
+    }
+    }
 }
