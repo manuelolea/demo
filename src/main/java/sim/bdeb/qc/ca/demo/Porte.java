@@ -5,7 +5,7 @@ import javafx.scene.paint.Color;
 
 public class Porte {
     private int hauteurPorte=150;
-    private int largeurPorte = 75;
+    private int largeurPorte = 80;
     private Color couleurPorte = Color.BROWN;
     private Color couleurNumero = Color.YELLOW;
     private int posPorteX;
