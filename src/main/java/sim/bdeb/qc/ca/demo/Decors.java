@@ -27,18 +27,19 @@ public class Decors extends ObjetJeux {
 
         double largueurBrique = brique.getWidth();
         double hauteurBrique = brique.getHeight();
-        //double positionCameraX = camera.getPositionX();
 
-        //double decalageCameraX = positionCameraX % largueurBrique;
-        int nbBriqueX = (int) Math.ceil(camera.getLongeureEcran()/largueurBrique) + 1;
+        int colonneDebut = (int) (camera.getPositionX()/ largueurBrique);
+        int colonneFin = (int) ((camera.getPositionX() + camera.getLongeureEcran())/largueurBrique) + 2;
+
         int nbBriqueY = (int) Math.ceil(camera.getHauteureEcran()/hauteurBrique) + 1;
 
-        for (int i = 0; i < nbBriqueX ; i++) {
+        for (int i = colonneDebut; i < colonneFin ; i++) {
             for (int j = 0; j < nbBriqueY ; j++) {
-                double x = i * largueurBrique; //- decalageCameraX;
-                double y = j * hauteurBrique;
+                double mondeX = i * largueurBrique;
+                double mondeY = j * hauteurBrique;
+                double xEcran = mondeX - camera.getPositionX();
 
-                context.drawImage(getBrique(), x, y);
+                context.drawImage(brique, xEcran, mondeY);
             }
         }
     }
