@@ -12,15 +12,18 @@ public class Maison {
     private int LongeureMaison;
     private int numAdresse;
     private int HauteureMaison;
+    boolean estAbonne;
 
-    public Maison(int positionMaisonX,int positionMaisonY,int numAdresse) {
+    public Maison(int positionMaisonX,int positionMaisonY,int numAdresse, boolean estAbonne) {
         this.LongeureMaison =1300;
         this.HauteureMaison=580;
         this.positionMaisonX =positionMaisonX;
         this.positionMaisonY = positionMaisonY;
         this.numAdresse = numAdresse;
+        this.estAbonne = estAbonne;
     }
     public void creerMaison(GraphicsContext context){
+        creerPorte(context);
 
 
 
