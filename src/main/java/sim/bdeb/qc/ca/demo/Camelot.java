@@ -9,14 +9,22 @@ public class Camelot extends ObjetJeux{
     private Image camelot1 = new Image("camelot1.png");
     private Image camelot2 = new Image("camelot2.png");
 
-    private static double vitesseInitial = 400;
-    private static double accel = 300;
-    private static double vitesseMin = 200;
-    private static double vitesseMax = 600;
-    private static double gravite = 1500;
+    private double vitesseInitial = 400;
+    private double accel = 300;
+    private double vitesseMin = 200;
+    private double vitesseMax = 600;
+    private double gravite = 1500;
 
-    private static double largueurCamelot = 172;
-    private static double hauteurCamelot = 144;
+    private double largueurCamelot = 172;
+    private double hauteurCamelot = 144;
+
+    public double getLargueurCamelot() {
+        return largueurCamelot;
+    }
+
+    public Point2D getVitesse(){
+        return vitesse;
+    }
 
     private Point2D position;
     private Point2D vitesse;
@@ -39,6 +47,9 @@ public class Camelot extends ObjetJeux{
         if(input != null){
             this.input = input;
         }
+    }
+    public Point2D getPosition(){
+        return position;
     }
 
     @Override
@@ -66,9 +77,9 @@ public class Camelot extends ObjetJeux{
     double vx = vitesse.getX();
     double vy = vitesse.getY();
 
-    boolean gauche = input.gauche;
-    boolean droite = input.droite;
-    boolean saut = input.saut;
+    boolean gauche = Input.gauche;
+    boolean droite = Input.droite;
+    boolean saut = Input.saut;
 
     if(gauche){
         vx -= accel * dt;
@@ -93,7 +104,8 @@ public class Camelot extends ObjetJeux{
     if (vx >  vitesseMax){
         vx = vitesseMax;
     }
-    boolean sol = (position.getX() >= 400);
+
+    boolean sol = (position.getY() >= 436 - 1);
 
     if(saut && sol){
         vy = -500;
@@ -103,8 +115,8 @@ public class Camelot extends ObjetJeux{
     vitesse = new Point2D(vx, vy);
     position = position.add(vitesse.multiply(dt));
 
-    if (position.getX() > 400) {
-        position = new Point2D(position.getX(), 400);
+    if (position.getY() > 436) {
+        position = new Point2D(position.getX(), 436);
         vitesse = new Point2D(vitesse.getX(), 0);
     }
     }

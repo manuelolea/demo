@@ -25,25 +25,37 @@ public class MainJavaFx extends Application {
         var context = canvas.getGraphicsContext2D();
 
         //Test classe input
-        Input input = new Input();
         Input.initialiser(scene);
 
          //creation camera jex et decors a mettre plus tard dans la classe partie
         CameraJeu camera1 = new CameraJeu(0,0,largueurScene,hauteurScene);
         Decors decors1 = new Decors();
-
-        decors1.draw(context,camera1);
         Camelot camelot = new Camelot(180,436);
-        camelot.draw(context,camera1);
 
         AnimationTimer animationJeux = new AnimationTimer() {
+            private long dernierTemps = 0;
             @Override
             public void handle(long now) {
+                if (dernierTemps == 0){
+                    dernierTemps = now;
+                    return;
+                }
+                double dt = (now - dernierTemps) * 1e-9;
+                dernierTemps = now;
+
+                camelot.setDt(dt);
                 decors1.update();
                 camelot.update();
+                camera1.update(camelot);
+
+                context.clearRect(0,0,largueurScene,hauteurScene);
+
+                decors1.draw(context,camera1);
+                camelot.draw(context,camera1);
             }
         };
 
+        animationJeux.start();
         Image iconFenetre = new Image("journal.png");
         stage.getIcons().add(iconFenetre);
         stage.setTitle("Camelot à vélo");

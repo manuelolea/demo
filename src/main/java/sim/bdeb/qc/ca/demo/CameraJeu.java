@@ -15,6 +15,10 @@ private double hauteureEcran;
         this.hauteureEcran = hauteureEcran;
     }
 
+    public void update(Camelot camelot){
+        double decalage = this.longeureEcran * 0.2;
+        this.positionX = camelot.getPosition().getX() - decalage;
+    }
     public double getPositionX() {
         return positionX;
     }
