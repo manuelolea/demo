@@ -30,7 +30,6 @@ public class Camelot extends ObjetJeux{
     private Point2D vitesse;
 
     private double temps= 0.0;
-    private double dt = 0.0;
 
     private Input input= new Input();
 
@@ -39,9 +38,6 @@ public class Camelot extends ObjetJeux{
         this.vitesse = new Point2D(vitesseInitial,0 );
     }
 
-    public void setDt(double dt) {
-        this.dt = dt;
-    }
 
     public void setInput(Input input) {
         if(input != null){
@@ -68,7 +64,7 @@ public class Camelot extends ObjetJeux{
     }
 
     @Override
-    public void update(){
+    public void update(double dt){
         if (dt <= 0){
             return;
     }

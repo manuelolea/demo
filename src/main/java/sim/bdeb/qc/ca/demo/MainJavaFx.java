@@ -27,10 +27,7 @@ public class MainJavaFx extends Application {
         //Test classe input
         Input.initialiser(scene);
 
-         //creation camera jex et decors a mettre plus tard dans la classe partie
-        CameraJeu camera1 = new CameraJeu(0,0,largueurScene,hauteurScene);
-        Decors decors1 = new Decors();
-        Camelot camelot = new Camelot(180,436);
+        Partie partie = new Partie(largueurScene, hauteurScene);
 
         AnimationTimer animationJeux = new AnimationTimer() {
             private long dernierTemps = 0;
@@ -43,21 +40,19 @@ public class MainJavaFx extends Application {
                 double dt = (now - dernierTemps) * 1e-9;
                 dernierTemps = now;
 
-                camelot.setDt(dt);
-                decors1.update();
-                camelot.update();
-                camera1.update(camelot);
-
-                context.clearRect(0,0,largueurScene,hauteurScene);
-
-                decors1.draw(context,camera1);
-                camelot.draw(context,camera1);
+                partie.update(dt);
+                partie.draw(context);
             }
         };
 
         animationJeux.start();
-        Image iconFenetre = new Image("journal.png");
-        stage.getIcons().add(iconFenetre);
+        try {
+            Image iconFenetre = new Image("journal.png");
+            stage.getIcons().add(iconFenetre);
+        }catch (Exception e){
+            System.out.println("Image d'icône introuvable");
+        }
+
         stage.setTitle("Camelot à vélo");
         stage.setScene(scene);
         stage.show();
