@@ -1,6 +1,5 @@
 package sim.bdeb.qc.ca.demo;
 
-import javafx.geometry.HPos;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -64,9 +63,9 @@ public class Camelot extends ObjetJeux{
     }
 
     @Override
-    public void update(double dt){
+    public int update(double dt){
         if (dt <= 0){
-            return;
+            return 0;
     }
     temps += dt;
 
@@ -115,5 +114,6 @@ public class Camelot extends ObjetJeux{
         position = new Point2D(position.getX(), 436);
         vitesse = new Point2D(vitesse.getX(), 0);
     }
+        return 0;
     }
 }

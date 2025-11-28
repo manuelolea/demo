@@ -8,10 +8,10 @@ public class Fenetres extends ObjetJeux {
     private Image fenetresVertes;
     private Image fenetresRouges;
     boolean estTouche;
-    private Image imageCourante;
+    private Image imageResultante;
 
-    private double largeur = 159;
-    private double hauteur = 130;
+    private double largeurImg = 159;
+    private double hauteurImg = 130;
 
     private double posX;
     private double posY;
@@ -22,7 +22,7 @@ public class Fenetres extends ObjetJeux {
         this.fenetresBlanches = new Image("fenetre.png");
         this.fenetresVertes = new Image("fenetre-brisee-vert.png");
         this.fenetresRouges = new Image("fenetre-brisee-rouge.png");
-        this.imageCourante = fenetresBlanches;
+        this.imageResultante = fenetresBlanches;
         this.estTouche = false;
     }
 
@@ -34,12 +34,12 @@ public class Fenetres extends ObjetJeux {
         this.estTouche = estTouche;
     }
 
-    public double getLargeur() {
-        return largeur;
+    public double getLargeurImg() {
+        return largeurImg;
     }
 
-    public double getHauteur() {
-        return hauteur;
+    public double getHauteurImg() {
+        return hauteurImg;
     }
 
     public double getX() {
@@ -52,16 +52,19 @@ public class Fenetres extends ObjetJeux {
 
     @Override
     public void draw(GraphicsContext context, CameraJeu camera) {
-        double posXImages = posX - camera.getPositionX();
-        double posYImages = posY;
+        double ecranX = posX - camera.getPositionX();
+        double ecranY = posY;
 
-        if (posX + largeur > 0 && posXImages < camera.getLongeureEcran()) {
-            context.drawImage(imageCourante, posXImages, posYImages,159,130);
+
+       
+        if (posX + largeurImg > 0 && ecranX < camera.getLongeureEcran()) {
+            context.drawImage(imageResultante, ecranX, ecranY);
         }
     }
 
     @Override
-    public void update(double dt) {
+    public int update(double dt) {
+        return 0;
     }
 
     public int touche(boolean estAbonne) {
@@ -72,11 +75,11 @@ public class Fenetres extends ObjetJeux {
         this.estTouche = true;
 
         if (estAbonne) {
-            imageCourante = fenetresRouges;
+            imageResultante = fenetresRouges;
             return -2;
             // perd 2$ avec setter ou boolean
         } else {
-            imageCourante = fenetresVertes;
+            imageResultante = fenetresVertes;
             // gagne 2$ avec setter ou boolean
             return 2;
         }
