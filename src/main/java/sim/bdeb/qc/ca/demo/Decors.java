@@ -45,6 +45,6 @@ public class Decors extends ObjetJeux {
     }
 
     @Override
-    public void update(){}
+    public void update(double dt){}
 
 }

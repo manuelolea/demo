@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 public class Journaux extends ObjetJeux{
 
     private Image journal = new Image("journal.png");
+
     private double largueurJournal = 52;
     private double hauteurJournal = 31;
 
@@ -17,12 +18,14 @@ public class Journaux extends ObjetJeux{
     private double gravite = 1500;
     private double vitesseMax = 1500;
 
+
     public Journaux(Camelot camelot, double masse, boolean lancerHaut, boolean lancerDroit, boolean force){
         this.masse = masse;
 
         double debutX = camelot.getPosition().getX() + ((camelot.getLargueurCamelot())/2) - (this.largueurJournal / 2);
-        double debutY = camelot.getPosition().getX() + ((camelot.getLargueurCamelot())/2) - (this.largueurJournal / 2);
+        double debutY = camelot.getPosition().getY() + ((double) 144 /2) - (this.hauteurJournal / 2);
 
+        this.position = new Point2D(debutX,debutY);
         Point2D pInitial;
 
         if (lancerHaut){
@@ -37,13 +40,62 @@ public class Journaux extends ObjetJeux{
 
         Point2D vitesseCamelot = camelot.getVitesse();
         this.vitesse = vitesseCamelot.add(pInitial.multiply(1/this.masse));
-
     }
+
+    public double getX() {
+        return position.getX();
+    }
+    public double getY() {
+        return position.getY();
+    }
+
+    public double getLargueurJournal() {
+        return largueurJournal;
+    }
+
+    public double getHauteurJournal() {
+        return hauteurJournal;
+    }
+
     @Override
     public void draw(GraphicsContext context, CameraJeu camera) {
+        double xEcran = position.getX() - camera.getPositionX();
+        double yEcran = position.getY();
 
+        if (xEcran + largueurJournal > 0 && xEcran < camera.getLongeureEcran()){
+            context.drawImage(journal, xEcran, yEcran);
+        }
     }
 
     @Override
-    public void update(){}
+    public void update(double dt){
+        double vy = vitesse.getY() + (gravite * dt);
+        double vx = vitesse.getX();
+
+        this.vitesse = new Point2D(vx,vy);
+        /*Limite la vitesse du journal
+          Verifie que le module du vecteur journal ne depasse pas 1500px/s
+          Si le vecteur est plus long que la vMax on le redimensionne à l'aide de
+          .magnitude() pour que v = vMax */
+
+        if (this.vitesse.magnitude() > vitesseMax){
+            this.vitesse = this.vitesse.multiply(vitesseMax/this.vitesse.magnitude());
+        }
+
+        this.position = this.position.add(this.vitesse.multiply(dt));
+    }
+
+    public boolean estSorti(CameraJeu camera){
+        double xEcran = position.getX() - camera.getPositionX();
+        double yEcran = position.getY();
+
+        if (yEcran > camera.getHauteureEcran()) {
+            return true;
+        } else if (xEcran + largueurJournal < 0) {
+            return true;
+        } else if (xEcran > camera.getLongeureEcran()) {
+            return true;
+        }
+    return false;
+    }
 }
