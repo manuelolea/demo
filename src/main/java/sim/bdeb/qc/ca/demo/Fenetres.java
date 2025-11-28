@@ -56,7 +56,7 @@ public class Fenetres extends ObjetJeux {
         double posYImages = posY;
 
         if (posX + largeur > 0 && posXImages < camera.getLongeureEcran()) {
-            context.drawImage(imageCourante, posXImages, posYImages);
+            context.drawImage(imageCourante, posXImages, posYImages,159,130);
         }
     }
 
