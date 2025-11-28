@@ -2,55 +2,80 @@ package sim.bdeb.qc.ca.demo;
 
 import javafx.scene.canvas.GraphicsContext;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Maison {
-    private Random randfenetres = new Random();
-    private int nombreFenetres = randfenetres.nextInt(3);
+    private Porte porte;
+    private BoitesAuxLettres boitesAuxLettres;
+    private ArrayList<Fenetres> fenetres;
     private int positionMaisonX;
     private int positionMaisonY;
-    private int LongeureMaison;
+    private double x;
+    private double y = 0;
+    private int largueurMaison;
     private int numAdresse;
-    private int HauteureMaison;
+    private int hauteureMaison;
     boolean estAbonne;
 
-    public Maison(int positionMaisonX,int positionMaisonY,int numAdresse, boolean estAbonne) {
-        this.LongeureMaison =1300;
-        this.HauteureMaison=580;
-        this.positionMaisonX =positionMaisonX;
-        this.positionMaisonY = positionMaisonY;
+    private Random rnd = new Random();
+
+    public Maison(double x,int numAdresse, boolean estAbonne) {
+        this.x = x;
+        this.largueurMaison = 1300;
+        this.hauteureMaison = 580;
+        this.fenetres = new ArrayList<>();
         this.numAdresse = numAdresse;
         this.estAbonne = estAbonne;
+
+        creerComposantes();
     }
-    public void creerMaison(GraphicsContext context, CameraJeu camera){
-        creerPorte(context);
-        creerFenetres(context,camera);
 
-
-
+    public BoitesAuxLettres getBoitesAuxLettres() {
+        return boitesAuxLettres;
     }
-    public void creerFenetres(GraphicsContext context, CameraJeu camera){
-        int hauteurFenetre = positionMaisonY + 50;
-        Fenetres fenetre1 = new Fenetres(positionMaisonX+300,hauteurFenetre);
-        Fenetres fenetre2 = new Fenetres(positionMaisonX+600,hauteurFenetre);
-        switch (nombreFenetres){
-            case 1 :
-                fenetre1.draw(context,camera);
-            break;
-            case 2 :
-                fenetre1.draw(context,camera);
-                fenetre2.draw(context,camera);
-                break;
-            default:
-                break;
+
+    public ArrayList<Fenetres> getFenetres() {
+        return fenetres;
+    }
+
+    public int getLargueurMaison() {
+        return largueurMaison;
+    }
+
+    public void creerComposantes(){
+        double solY = 436;
+        double porteY = solY - 150;
+
+        double boiteX = x + 200;
+
+        double minBoiteY = hauteureMaison * 0.20;
+        double maxBoiteY = hauteureMaison * 0.70;
+        double boiteY = minBoiteY + (rnd.nextDouble() * (maxBoiteY - minBoiteY));
+
+        this.boitesAuxLettres = new BoitesAuxLettres(boiteX, boiteY);
+
+        genererFentres();
+    }
+    public void genererFentres(){
+        int nombreFenetres = rnd.nextInt(3);
+        double fenetreY = 50;
+
+        if (nombreFenetres >= 1){
+            fenetres.add(new Fenetres(x + 300,fenetreY));
+        }
+        if (nombreFenetres == 2){
+         fenetres.add(new Fenetres(x + 600, fenetreY));
         }
     }
-    public void creerBoitesAuxLettres(GraphicsContext context, CameraJeu camera){}
 
-    public void creerPorte(GraphicsContext context){
-        int posPorteX = positionMaisonX + 1260;
-        int posPorteY = positionMaisonY + 430;
-        Porte porte1 = new Porte(posPorteX,posPorteY,numAdresse);
-        porte1.drawDoor(context);
+    public void draw(GraphicsContext context, CameraJeu camera){
+        porte.draw(context,camera);
+        boitesAuxLettres.draw(context,camera);
+
+        for (int i = 0; i < fenetres.size(); i++) {
+            Fenetres f = fenetres.get(i);
+            f.draw(context,camera);
+        }
     }
 }

@@ -20,6 +20,8 @@ public class Partie {
 
     private ArrayList<BoitesAuxLettres> listeBoiteAuLettres;
 
+    private ArrayList<Maison> listeMaison;
+
     private int argent = 0;
 
     public Partie(double largueur, double hauteur){
@@ -35,6 +37,7 @@ public class Partie {
 
         this.listeFenetres = new ArrayList<>();
         this.listeBoiteAuLettres = new ArrayList<>();
+        this.listeMaison = new ArrayList<>();
         genererNiveau();
     }
     public void update(double dt){
@@ -85,6 +88,11 @@ public class Partie {
         
         decors.draw(context,camera);
 
+        for (int i = 0; i < listeMaison.size(); i++) {
+            Maison m = listeMaison.get(i);
+            m.draw(context,camera);
+        }
+
         for (int i = 0; i < listeBoiteAuLettres.size(); i++) {
             BoitesAuxLettres b = listeBoiteAuLettres.get(i);
             b.draw(context,camera);
@@ -113,25 +121,18 @@ public class Partie {
 
     }
     private void genererNiveau(){
+        int adresse = 100 + (int)(Math.random() * 850);
+
         for (int i = 0; i < 12; i++) {
-            double maisonX = i * 1300;
-            double yFenetre = 50;
+            double maisonX = (i + 1) * 1300;
+            boolean estAbonne = Math.random() < 0.5;
 
-            Fenetres f1 = new Fenetres(maisonX + 300, yFenetre);
-            listeFenetres.add(f1);
+            Maison m = new Maison(maisonX, adresse, estAbonne);
 
-            if (Math.random() > 0.5){
-                Fenetres f2 = new Fenetres(maisonX + 600, yFenetre);
-                listeFenetres.add(f2);
-            }
-            double boiteAuLettresX = maisonX + 200;
+            this.listeFenetres.addAll(m.getFenetres());
+            this.listeBoiteAuLettres.add(m.getBoitesAuxLettres());
 
-            double minY = hauteurEcran * 0.20;
-            double maxY = hauteurEcran * 0.70;
-            double boiteAuLettreY = minY +(Math.random() * (maxY - minY));
-
-            BoitesAuxLettres b1 = new BoitesAuxLettres(boiteAuLettresX,boiteAuLettreY);
-            listeBoiteAuLettres.add(b1);
+            adresse += 2;
         }
     }
 }
