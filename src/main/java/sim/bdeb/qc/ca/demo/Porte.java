@@ -17,6 +17,23 @@ public class Porte {
         this.posPorteY = posPorteY;
         this.numAdresse = numAdresse;
     }
+
+    public int getHauteurPorte() {
+        return hauteurPorte;
+    }
+
+    public int getLargeurPorte() {
+        return largeurPorte;
+    }
+
+    public int getPosPorteX() {
+        return posPorteX;
+    }
+
+    public int getPosPorteY() {
+        return posPorteY;
+    }
+
     public void drawDoor(GraphicsContext context){
         context.setFill(couleurPorte);
         context.fillRect(posPorteX,posPorteY,largeurPorte,hauteurPorte);

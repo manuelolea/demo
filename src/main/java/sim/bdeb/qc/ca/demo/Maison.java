@@ -22,17 +22,35 @@ public class Maison {
         this.numAdresse = numAdresse;
         this.estAbonne = estAbonne;
     }
-    public void creerMaison(GraphicsContext context){
+    public void creerMaison(GraphicsContext context, CameraJeu camera){
         creerPorte(context);
+        creerFenetres(context,camera);
 
 
 
     }
-    public void creerFenetres(GraphicsContext context){}
-    public void creerBoitesAuxLettres(GraphicsContext context){}
+    public void creerFenetres(GraphicsContext context, CameraJeu camera){
+        int hauteurFenetre = positionMaisonY + 50;
+        Fenetres fenetre1 = new Fenetres(positionMaisonX+300,hauteurFenetre);
+        Fenetres fenetre2 = new Fenetres(positionMaisonX+600,hauteurFenetre);
+        switch (nombreFenetres){
+            case 1 :
+                fenetre1.draw(context,camera);
+            break;
+            case 2 :
+                fenetre1.draw(context,camera);
+                fenetre2.draw(context,camera);
+                break;
+            default:
+                break;
+        }
+    }
+    public void creerBoitesAuxLettres(GraphicsContext context, CameraJeu camera){}
+
     public void creerPorte(GraphicsContext context){
         int posPorteX = positionMaisonX + 1260;
         int posPorteY = positionMaisonY + 430;
         Porte porte1 = new Porte(posPorteX,posPorteY,numAdresse);
+        porte1.drawDoor(context);
     }
 }
