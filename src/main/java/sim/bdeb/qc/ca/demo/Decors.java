@@ -1,6 +1,5 @@
 package sim.bdeb.qc.ca.demo;
 
-import sim.bdeb.qc.ca.demo.CameraJeu;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -45,6 +44,8 @@ public class Decors extends ObjetJeux {
     }
 
     @Override
-    public void update(double dt){}
+    public int update(double dt){
+        return 0;
+    }
 
 }
