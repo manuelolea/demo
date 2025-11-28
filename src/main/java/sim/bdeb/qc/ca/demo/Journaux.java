@@ -68,7 +68,7 @@ public class Journaux extends ObjetJeux{
     }
 
     @Override
-    public void update(double dt){
+    public int update(double dt){
         double vy = vitesse.getY() + (gravite * dt);
         double vx = vitesse.getX();
 
@@ -83,6 +83,7 @@ public class Journaux extends ObjetJeux{
         }
 
         this.position = this.position.add(this.vitesse.multiply(dt));
+        return 0;
     }
 
     public boolean estSorti(CameraJeu camera){
