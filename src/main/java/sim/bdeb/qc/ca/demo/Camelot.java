@@ -30,7 +30,7 @@ public class Camelot extends ObjetJeux{
 
     private double temps= 0.0;
 
-    private Input input= new Input();
+    private Input input = new Input();
 
     public Camelot(double x, double y){
         this.position = new Point2D(x,y);

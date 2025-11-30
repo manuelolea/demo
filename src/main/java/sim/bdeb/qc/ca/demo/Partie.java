@@ -17,9 +17,7 @@ public class Partie {
     private double tempsRecharge;
 
     private ArrayList<Fenetres> listeFenetres;
-
     private ArrayList<BoitesAuxLettres> listeBoiteAuLettres;
-
     private ArrayList<Maison> listeMaison;
 
     private int argent = 0;
@@ -38,9 +36,11 @@ public class Partie {
         this.listeFenetres = new ArrayList<>();
         this.listeBoiteAuLettres = new ArrayList<>();
         this.listeMaison = new ArrayList<>();
+
         genererNiveau();
     }
     public void update(double dt){
+
         camelot.update(dt);
         decors.update(dt);
         camera.update(camelot);
@@ -82,25 +82,15 @@ public class Partie {
             }
         }
     }
-    
+
     public void draw(GraphicsContext context){
         context.clearRect(0,0,largueurEcran,hauteurEcran);
-        
+
         decors.draw(context,camera);
 
         for (int i = 0; i < listeMaison.size(); i++) {
             Maison m = listeMaison.get(i);
             m.draw(context,camera);
-        }
-
-        for (int i = 0; i < listeBoiteAuLettres.size(); i++) {
-            BoitesAuxLettres b = listeBoiteAuLettres.get(i);
-            b.draw(context,camera);
-        }
-
-        for (int i = 0; i < listeFenetres.size(); i++) {
-            Fenetres f = listeFenetres.get(i);
-            f.draw(context,camera);
         }
 
         for (int i = 0; i < listeJournaux.size(); i++) {
@@ -128,6 +118,7 @@ public class Partie {
             boolean estAbonne = Math.random() < 0.5;
 
             Maison m = new Maison(maisonX, adresse, estAbonne);
+            listeMaison.add(m);
 
             this.listeFenetres.addAll(m.getFenetres());
             this.listeBoiteAuLettres.add(m.getBoitesAuxLettres());

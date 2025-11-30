@@ -9,21 +9,16 @@ public class Maison {
     private Porte porte;
     private BoitesAuxLettres boitesAuxLettres;
     private ArrayList<Fenetres> fenetres;
-    private int positionMaisonX;
-    private int positionMaisonY;
     private double x;
-    private double y = 0;
-    private int largueurMaison;
+    private double largueurMaison = 1300;
     private int numAdresse;
-    private int hauteureMaison;
+    private double hauteureMaison = 580;
     boolean estAbonne;
 
     private Random rnd = new Random();
 
     public Maison(double x,int numAdresse, boolean estAbonne) {
         this.x = x;
-        this.largueurMaison = 1300;
-        this.hauteureMaison = 580;
         this.fenetres = new ArrayList<>();
         this.numAdresse = numAdresse;
         this.estAbonne = estAbonne;
@@ -39,13 +34,15 @@ public class Maison {
         return fenetres;
     }
 
-    public int getLargueurMaison() {
+    public double getLargueurMaison() {
         return largueurMaison;
     }
 
     public void creerComposantes(){
-        double solY = 436;
-        double porteY = solY - 150;
+        double hauteurImagePorte = 195;
+        double porteY = hauteureMaison - hauteurImagePorte;
+
+        this.porte = new Porte(x,porteY,numAdresse);
 
         double boiteX = x + 200;
 
