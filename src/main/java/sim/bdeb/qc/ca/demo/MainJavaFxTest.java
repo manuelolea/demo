@@ -20,8 +20,6 @@ public class MainJavaFxTest extends Application {
         root.getChildren().add(canvas);
         var context = canvas.getGraphicsContext2D();
 
-       barreJeu barreJeu = new barreJeu("vcyrvbrybv");
-        barreJeu.drawBarre(context);
         stage.setTitle("Camelot à vélo");
         stage.setScene(scene);
         stage.show();
