@@ -66,6 +66,10 @@ public class Maison {
         }
     }
 
+    public int getNumAdresse() {
+        return numAdresse;
+    }
+
     public void draw(GraphicsContext context, CameraJeu camera){
         porte.draw(context,camera);
         boitesAuxLettres.draw(context,camera);

@@ -112,6 +112,7 @@ public class Partie {
     }
     private void genererNiveau(){
         int adresse = 100 + (int)(Math.random() * 850);
+        ArrayList<Integer> listeMaisonBarre = new ArrayList<>();
 
         for (int i = 0; i < 12; i++) {
             double maisonX = (i + 1) * 1300;
@@ -119,11 +120,13 @@ public class Partie {
 
             Maison m = new Maison(maisonX, adresse, estAbonne);
             listeMaison.add(m);
+            listeMaisonBarre.add(m.getNumAdresse());
 
             this.listeFenetres.addAll(m.getFenetres());
             this.listeBoiteAuLettres.add(m.getBoitesAuxLettres());
 
             adresse += 2;
         }
+        String listeMaison = String.join(" ",String.valueOf(listeMaisonBarre));
     }
 }
