@@ -3,7 +3,6 @@ package sim.bdeb.qc.ca.demo;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
-
 public class Partie {
     private Camelot camelot;
     private Decors decors;
@@ -17,8 +16,6 @@ public class Partie {
     private double masse;
     private double tempsRecharge;
 
-    private ArrayList<Fenetres> listeFenetres;
-    private ArrayList<BoitesAuxLettres> listeBoiteAuLettres;
     private ArrayList<Maison> listeMaison;
 
     private int argent = 0;
@@ -37,8 +34,6 @@ public class Partie {
         this.masse = 1 + Math.random();
         this.listeJournaux = new ArrayList<>();
 
-        this.listeFenetres = new ArrayList<>();
-        this.listeBoiteAuLettres = new ArrayList<>();
         this.listeMaison = new ArrayList<>();
 
         genererNiveau();
@@ -57,27 +52,24 @@ public class Partie {
 
             boolean journalDetruit = false;
 
-            for (int k = 0; k < listeFenetres.size() ; k++) {
-                Fenetres f = listeFenetres.get(k);
-                if (j.getX() < f.getX() + f.getLargeurImg() && j.getX() + j.getLargueurJournal() > f.getX() && j.getY() < f.getY() + f.getHauteurImg() && j.getY() + j.getHauteurJournal() > f.getY()){
-                    boolean maisonAbonnee = Math.random() < 0.5;
-                    int gain = f.touche(maisonAbonnee);
+            for (Maison m : listeMaison){
+                boolean maisonAbonnee = m.estAbonne();
 
-                    this.argent += gain;
-
-                    journalDetruit = true;
-                }
-            }
-            if (!journalDetruit) {
-                for (int k = 0; k < listeBoiteAuLettres.size(); k++) {
-                    BoitesAuxLettres b = listeBoiteAuLettres.get(k);
-
-                    if (j.getX() < b.getX() + b.getLargueurImg() && j.getX() + j.getLargueurJournal() > b.getX() && j.getY() < b.getY() + b.getHauteurImg() && j.getY() + j.getHauteurJournal() > b.getY()) {
-                        boolean maisonAbonnee = Math.random() < 0.5;
+                BoitesAuxLettres b = m.getBoitesAuxLettres();
+                if (b != null){
+                    if (intercepte(j, b.getX(),b.getY(),b.getLargueurImg(),b.getHauteurImg())){
                         int gain = b.touche(maisonAbonnee);
-
                         this.argent += gain;
                         journalDetruit = true;
+                    }
+                }
+                if (!journalDetruit){
+                    for (Fenetres f : m.getFenetres())
+                    if (intercepte(j, f.getX(), f.getY(), f.getLargeurImg(), f.getHauteurImg())){
+                        int gain = f.touche(maisonAbonnee);
+                        this.argent += gain;
+                        journalDetruit = true;
+                        break;
                     }
                 }
             }
@@ -85,6 +77,10 @@ public class Partie {
                 listeJournaux.remove(i);
             }
         }
+    }
+
+    public boolean intercepte(Journaux j, double x, double y, double largueur, double hauteur){
+        return j.getX() < x + largueur && j.getX() + j.getLargueurJournal() > x && j.getY() < y + hauteur && j.getY() + j.getHauteurJournal() > y;
     }
 
     public void draw(GraphicsContext context){
@@ -127,9 +123,6 @@ public class Partie {
 
             Maison m = new Maison(maisonX, adresse, estAbonne);
             listeMaison.add(m);
-
-            this.listeFenetres.addAll(m.getFenetres());
-            this.listeBoiteAuLettres.add(m.getBoitesAuxLettres());
 
             if (estAbonne){
                 listetemporaire.append(adresse).append("  ");
