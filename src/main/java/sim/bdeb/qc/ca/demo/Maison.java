@@ -66,8 +66,8 @@ public class Maison {
         }
     }
 
-    public int getNumAdresse() {
-        return numAdresse;
+    public boolean estAbonne(){
+        return estAbonne;
     }
 
     public void draw(GraphicsContext context, CameraJeu camera){
