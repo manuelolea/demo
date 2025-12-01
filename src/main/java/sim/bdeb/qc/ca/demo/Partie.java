@@ -8,6 +8,7 @@ public class Partie {
     private Camelot camelot;
     private Decors decors;
     private CameraJeu camera;
+    private BarreJeu barreJeu;
 
     private double hauteurEcran;
     private double largueurEcran;
@@ -21,6 +22,8 @@ public class Partie {
     private ArrayList<Maison> listeMaison;
 
     private int argent = 0;
+    private int nbJournaux = 24;
+    private String chaineAdresse = "";
 
     public Partie(double largueur, double hauteur){
         this.largueurEcran = largueur;
@@ -29,6 +32,7 @@ public class Partie {
         this.camera = new CameraJeu(0,0,largueur,hauteur);
         this.decors = new Decors();
         this.camelot = new Camelot(180,436);
+        this.barreJeu = new BarreJeu(largueur);
 
         this.masse = 1 + Math.random();
         this.listeJournaux = new ArrayList<>();
@@ -98,6 +102,7 @@ public class Partie {
             j.draw(context, camera);
         }
         camelot.draw(context,camera);
+        barreJeu.draw(context, nbJournaux, argent, chaineAdresse);
     }
     private void gererLancerJournaux(double dt){
         if (tempsRecharge > 0){
@@ -106,13 +111,15 @@ public class Partie {
         if ((Input.lancerHaut || Input.lancerDroit) && tempsRecharge <= 0){
             Journaux journal = new Journaux(camelot, masse, Input.lancerHaut, Input.lancerDroit, Input.force);
             listeJournaux.add(journal);
+
+            nbJournaux--;
             tempsRecharge = 0.5;
         }
 
     }
     private void genererNiveau(){
         int adresse = 100 + (int)(Math.random() * 850);
-        ArrayList<Integer> listeMaisonBarre = new ArrayList<>();
+        StringBuilder listetemporaire = new StringBuilder();
 
         for (int i = 0; i < 12; i++) {
             double maisonX = (i + 1) * 1300;
@@ -120,13 +127,16 @@ public class Partie {
 
             Maison m = new Maison(maisonX, adresse, estAbonne);
             listeMaison.add(m);
-            listeMaisonBarre.add(m.getNumAdresse());
 
             this.listeFenetres.addAll(m.getFenetres());
             this.listeBoiteAuLettres.add(m.getBoitesAuxLettres());
 
+            if (estAbonne){
+                listetemporaire.append(adresse).append("  ");
+            }
+
             adresse += 2;
         }
-        String listeMaison = String.join(" ",String.valueOf(listeMaisonBarre));
+        this.chaineAdresse = listetemporaire.toString();
     }
 }
