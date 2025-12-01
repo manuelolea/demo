@@ -21,7 +21,7 @@ public class UtilitairesDessins {
      * @param vecteur      Vecteur à dessiner avec une flèche
      * @param context      Contexte graphique du Canvas
      */
-    public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
+    /*public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
         if (vecteur.getX() != vecteur.getX()) {
             throw new IllegalArgumentException("Erreur dans les maths, probablement due à une division par zéro");
         }
@@ -37,7 +37,7 @@ public class UtilitairesDessins {
                 vecteur.normalize().multiply(pourcentage * longueurMax),
                 context);
     }
-
+*/
     private static void dessinerVecteur(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
         final double rayon = 1.5;
         var finEcran = origineEcran.add(vecteur);
