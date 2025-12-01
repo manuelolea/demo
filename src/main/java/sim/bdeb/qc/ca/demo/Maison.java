@@ -14,7 +14,6 @@ public class Maison {
     private int numAdresse;
     private double hauteureMaison = 580;
     boolean estAbonne;
-
     private Random rnd = new Random();
 
     public Maison(double x,int numAdresse, boolean estAbonne) {
@@ -22,42 +21,32 @@ public class Maison {
         this.fenetres = new ArrayList<>();
         this.numAdresse = numAdresse;
         this.estAbonne = estAbonne;
-
         creerComposantes();
     }
 
     public BoitesAuxLettres getBoitesAuxLettres() {
         return boitesAuxLettres;
     }
-
     public ArrayList<Fenetres> getFenetres() {
         return fenetres;
     }
 
-    public double getLargueurMaison() {
-        return largueurMaison;
-    }
-
+    // ajoute boite aux lettres et porte a maison
     public void creerComposantes(){
         double hauteurImagePorte = 195;
         double porteY = hauteureMaison - hauteurImagePorte;
-
         this.porte = new Porte(x,porteY,numAdresse);
-
         double boiteX = x + 200;
-
         double minBoiteY = hauteureMaison * 0.20;
         double maxBoiteY = hauteureMaison * 0.70;
         double boiteY = minBoiteY + (rnd.nextDouble() * (maxBoiteY - minBoiteY));
-
         this.boitesAuxLettres = new BoitesAuxLettres(boiteX, boiteY);
-
         genererFentres();
     }
+    // ajoute entre 0 et 2 fentres au hasard par maison
     public void genererFentres(){
         int nombreFenetres = rnd.nextInt(3);
         double fenetreY = 50;
-
         if (nombreFenetres >= 1){
             fenetres.add(new Fenetres(x + 300,fenetreY));
         }
@@ -69,11 +58,10 @@ public class Maison {
     public boolean estAbonne(){
         return estAbonne;
     }
-
+    // dessine les composantes de la maison
     public void draw(GraphicsContext context, CameraJeu camera){
         porte.draw(context,camera);
         boitesAuxLettres.draw(context,camera);
-
         for (int i = 0; i < fenetres.size(); i++) {
             Fenetres f = fenetres.get(i);
             f.draw(context,camera);

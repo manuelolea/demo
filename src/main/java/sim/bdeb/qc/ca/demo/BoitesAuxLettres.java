@@ -8,12 +8,9 @@ public class BoitesAuxLettres extends ObjetJeux {
     private final Image boitesAuLettresVertes;
     private final Image boitesAuLettresRouges;
     private Image imgResultante;
-
     private final double largueurImg = 81;
     private final double hauteurImg = 76;
-
     boolean estTouche;
-
     private final double posX;
     private final double  posY;
 
@@ -30,19 +27,18 @@ public class BoitesAuxLettres extends ObjetJeux {
     public double getLargueurImg() {
         return largueurImg;
     }
-
     public double getHauteurImg() {
         return hauteurImg;
     }
-
     public double getX() {
         return posX;
     }
-
     public double getY() {
         return posY;
     }
+
     @Override
+    // dessine la boite aux letre selon la position de la camera
     public void draw(GraphicsContext context, CameraJeu camera) {
         double ecranX =  posX - camera.getPositionX();
         double ecranY = posY;
@@ -57,6 +53,7 @@ public class BoitesAuxLettres extends ObjetJeux {
     return 0;
     }
 
+    // cette methode fait que la boite aux lettre est toucheée et determine le gain selon le boolean estAbonne
     public int touche(boolean estAbonne){
         this.estTouche = true;
         if (estAbonne) {

@@ -14,26 +14,19 @@ public class Partie {
     private Decors decors;
     private CameraJeu camera;
     private BarreJeu barreJeu;
-
     private double hauteurEcran;
     private double largueurEcran;
-
     private int numeroNiveau = 1;
     private double finNiveauX;
-
     private boolean enChargement = true;
     private double tempsChargement = 3;
-
     private boolean finDePartie = false;
     private double tempsFinPartie = 3;
-
     private ArrayList<Journaux> listeJournaux;
     private double masse;
     private double tempsRecharge;
-
     private ArrayList<Maison> listeMaison;
     private ArrayList<ParticulesCharges> listeParticule;
-
     private int argent = 0;
     private int nbJournaux = 0;
     private String chaineAdresse = "";
@@ -42,7 +35,7 @@ public class Partie {
         this.largueurEcran = largueur;
         this.hauteurEcran = hauteur;
 
-        this.camera = new CameraJeu(0, 0, largueur, hauteur);
+        this.camera = new CameraJeu( 0, largueur, hauteur);
         this.decors = new Decors();
         this.camelot = new Camelot(180, 436);
         this.barreJeu = new BarreJeu(largueur);

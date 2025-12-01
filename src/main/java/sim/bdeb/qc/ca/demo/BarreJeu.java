@@ -23,7 +23,7 @@ public class BarreJeu {
         this.imageJournal = new Image("icone-journal.png");
         this.imageMaison = new Image("icone-maison.png");
     }
-
+    //dessine la barre de jeu en haut de l'ecran sans tenir compte de la camera de jeu
     public void draw(GraphicsContext context, int nbJournaux, int argent, String listeAdresse){
         context.setFill(Color.rgb(0,0,0,0.5));
         context.fillRect(0,0,largeurEcran,hauteurBarre);
