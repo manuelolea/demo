@@ -14,7 +14,6 @@ public class Maison {
     private int numAdresse;
     private double hauteureMaison = 580;
     boolean estAbonne;
-
     private Random rnd = new Random();
 
     public Maison(double x,int numAdresse, boolean estAbonne) {
@@ -22,20 +21,17 @@ public class Maison {
         this.fenetres = new ArrayList<>();
         this.numAdresse = numAdresse;
         this.estAbonne = estAbonne;
-
         creerComposantes();
     }
 
     public BoitesAuxLettres getBoitesAuxLettres() {
         return boitesAuxLettres;
     }
-
     public ArrayList<Fenetres> getFenetres() {
         return fenetres;
     }
-
-    public double getLargueurMaison() {
-        return largueurMaison;
+    public boolean estAbonne(){
+        return estAbonne;
     }
 
     public void creerComposantes(){
@@ -54,6 +50,7 @@ public class Maison {
 
         genererFentres();
     }
+
     public void genererFentres(){
         int nombreFenetres = rnd.nextInt(3);
         double fenetreY = 50;
@@ -64,10 +61,6 @@ public class Maison {
         if (nombreFenetres == 2){
          fenetres.add(new Fenetres(x + 600, fenetreY));
         }
-    }
-
-    public boolean estAbonne(){
-        return estAbonne;
     }
 
     public void draw(GraphicsContext context, CameraJeu camera){

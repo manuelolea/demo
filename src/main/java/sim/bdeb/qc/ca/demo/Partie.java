@@ -40,15 +40,14 @@ public class Partie {
     private int argent = 0;
     private int nbJournaux = 24;
     private String chaineAdresse = "";
+
     public Partie(double largueur, double hauteur){
         this.largueurEcran = largueur;
         this.hauteurEcran = hauteur;
-
-        this.camera = new CameraJeu(0,0,largueur,hauteur);
+        this.camera = new CameraJeu(0,largueur,hauteur);
         this.decors = new Decors();
         this.camelot = new Camelot(180,436);
         this.barreJeu = new BarreJeu(largueur);
-
         this.masse = 1 + Math.random();
         this.listeJournaux = new ArrayList<>();
         this.listeMaison = new ArrayList<>();

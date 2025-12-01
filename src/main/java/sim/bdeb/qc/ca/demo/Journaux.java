@@ -5,30 +5,23 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class Journaux extends ObjetJeux{
-
     private Image journal = new Image("journal.png");
-
     private double largueurJournal = 52;
     private double hauteurJournal = 31;
-
     private Point2D accelerationExt = Point2D.ZERO;
     private Point2D position;
     private Point2D vitesse;
     private  double masse;
-
     private double gravite = 1500;
     private double vitesseMax = 1500;
 
 
     public Journaux(Camelot camelot, double masse, boolean lancerHaut, boolean lancerDroit, boolean force){
         this.masse = masse;
-
         double debutX = camelot.getPosition().getX() + ((camelot.getLargueurCamelot())/2) - (this.largueurJournal / 2);
         double debutY = camelot.getPosition().getY() + ((double) 144 /2) - (this.hauteurJournal / 2);
-
         this.position = new Point2D(debutX,debutY);
         Point2D pInitial;
-
         if (lancerHaut){
             pInitial = new Point2D(900,-900);
         }else {
@@ -49,11 +42,9 @@ public class Journaux extends ObjetJeux{
     public double getY() {
         return position.getY();
     }
-
     public double getLargueurJournal() {
         return largueurJournal;
     }
-
     public double getHauteurJournal() {
         return hauteurJournal;
     }

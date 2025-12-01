@@ -23,7 +23,6 @@ public class Porte extends ObjetJeux{
         this.posPorteX = posPorteX;
         this.posPorteY = posPorteY;
         this.numAdresse = numAdresse;
-
         this.porte = new Image("porte.png");
     }
 
@@ -43,8 +42,7 @@ public class Porte extends ObjetJeux{
             context.setTextAlign(TextAlignment.CENTER);
             context.fillText(Integer.toString(numAdresse), ecranX +(largeurPorte/2), ecranY + 60);
             context.setTextAlign(TextAlignment.LEFT);
-
-    }
+        }
     }
 
     @Override

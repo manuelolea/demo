@@ -7,27 +7,26 @@ public class Input {
     public static boolean gauche = false;
     public static boolean droite = false;
     public static boolean saut = false;
-
     public static boolean lancerHaut = false;
     public static boolean lancerDroit = false;
     public static boolean force = false;
 
     public static void initialiser(Scene scene) {
-
+        // gestion des touches pressed
         scene.setOnKeyPressed(e -> {
             KeyCode code = e.getCode();
             switch (code){
-                case LEFT -> gauche = true;
-                case RIGHT -> droite =true;
-                case SPACE,UP -> saut = true;
+                case LEFT -> gauche = true; // rester vitesse statique du camelot
+                case RIGHT -> droite =true; // acceleration du camelot
+                case SPACE,UP -> saut = true; // saut du camelot
+                case Z -> lancerHaut = true;// lancer journeau vers le haut
+                case X -> lancerDroit = true; // lancer journeau vers l'avant
 
-                case Z -> lancerHaut = true;
-                case X -> lancerDroit = true;
-
-                case SHIFT -> force = true;
+                case SHIFT -> force = true; // mode force
             }
         });
 
+        // gestion des touches relachées
         scene.setOnKeyReleased(e -> {
             KeyCode code = e.getCode();
             switch (code){
