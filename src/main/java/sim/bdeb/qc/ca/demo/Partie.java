@@ -4,6 +4,25 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 public class Partie {
+
+    //modification manu
+    private Niveau niveauActuel;
+    private int niveauEnCours = 1;
+    private int maisonsTouchees = 0; // Score du niveau
+
+    private enum EtatJeu {
+        CHARGEMENT,      // Écran noir debut
+        EN_COURS,        // jeu en cours
+        FIN_NIVEAU,   // fin victoire
+        FIN_PARTIE    // fin défaite
+    }
+    private EtatJeu etat = EtatJeu.CHARGEMENT;
+    private double timerTransition = 3.0; // Timer pour les écrans de 3s
+
+    private ArrayList<ParticulesCharges> listeParticules;
+    //modification manu
+
+
     private Camelot camelot;
     private Decors decors;
     private CameraJeu camera;
@@ -21,7 +40,6 @@ public class Partie {
     private int argent = 0;
     private int nbJournaux = 24;
     private String chaineAdresse = "";
-
     public Partie(double largueur, double hauteur){
         this.largueurEcran = largueur;
         this.hauteurEcran = hauteur;
@@ -33,11 +51,14 @@ public class Partie {
 
         this.masse = 1 + Math.random();
         this.listeJournaux = new ArrayList<>();
-
         this.listeMaison = new ArrayList<>();
+        this.listeParticules = new ArrayList<>(); // modification manu
 
         genererNiveau();
     }
+
+    //modification manu
+
     public void update(double dt){
 
         camelot.update(dt);

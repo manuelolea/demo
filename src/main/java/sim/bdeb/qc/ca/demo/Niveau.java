@@ -4,61 +4,42 @@ import java.util.ArrayList;
 
 public class Niveau {
     private final int nombreParticules;
+    private final int objectifTouches;
+    private final int nombreMaisons = 12;
+
     private ArrayList <ParticulesCharges> listeParticules;
     private ArrayList <Maison> listeMaison;
 
     private double finNiveauX;
-
+// modification manu
     public Niveau(int numNiveau, double largueurEcran, double hauteurEcran) {
+
+        // 1. CALCUL DU NOMBRE DE PARTICULES
         if (numNiveau >= 2) {
+            // Règle : min((niveau - 1) * 30, 400)
             int nbrParticules = (numNiveau - 1) * 30;
             this.nombreParticules = Math.min(nbrParticules, 400);
         } else {
-            this.nombreParticules = 0;
+            this.nombreParticules = 0; // Niveau 1 sans particules
         }
-        this.listeMaison = new ArrayList<>();
+
+        // 2. DÉFINITION DE L'OBJECTIF
+        // L'objectif augmente avec la difficulté (Exemple: 8 pour le niveau 1, puis augmente)
+        if (numNiveau == 1) {
+            this.objectifTouches = 8;
+        } else if (numNiveau <= 3) {
+            this.objectifTouches = 10;
+        } else {
+            this.objectifTouches = 12;
+        }
+
         this.listeParticules = new ArrayList<>();
+        this.listeMaison = new ArrayList<>();
     }
+    //modification manu
 
+    public void niveauChargement(boolean niveauCharge){}
 
-    public void genererElements(double largeurEcran, double hauteurEcran) {
-        int adresse = 100 + (int)(Math.random() * 850);
+    public void niveauFinit(boolean niveauFinit){}
 
-        for (int i = 0; i < 12; i++) {
-            double maisonX = (i + 1) * 1300;
-            boolean estAbonne = Math.random() < 0.5;
-
-            Maison m = new Maison(maisonX, adresse, estAbonne);
-            listeMaison.add(m);
-
-            adresse += 2;
-
-            if (i == 11){
-                this.finNiveauX = maisonX + (1.5 * largeurEcran);
-        }
-        }
-    }
-    private void genererPArticules(double largueurEcran, double hauteurEcran){
-        double largueurTotalNiveau = this.finNiveauX;
-
-        for (int i = 0; i < nombreParticules; i++) {
-            double rndX = Math.random() * largueurTotalNiveau;
-            double rndY = Math.random() * hauteurEcran;
-
-            listeParticules.add(new ParticulesCharges(rndX,rndY));
-        }
-    }
-    // ... getListeMaison(), getObjectifTouches() ...
-
-
-    public void niveauChargement(){}
-    public void niveauEnCours(){}
-    public void niveauFinit(){}
-}
-
-    public ArrayList<Maison> getListeMaison() {return listeMaison;}
-
-    public ArrayList<ParticulesCharges> getListeParticules() {return listeParticules;}
-
-    public double getFinNiveauX() {return finNiveauX;}
 }
