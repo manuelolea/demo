@@ -4,27 +4,25 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class BoitesAuxLettres extends ObjetJeux {
-    private Image boitesAuLettresBlanches;
-    private Image boitesAuLettresVertes;
-    private Image boitesAuLettresRouges;
+    private final Image boitesAuLettresBlanches;
+    private final Image boitesAuLettresVertes;
+    private final Image boitesAuLettresRouges;
     private Image imgResultante;
 
-    private double largueurImg = 81;
-    private double hauteurImg = 76;
+    private final double largueurImg = 81;
+    private final double hauteurImg = 76;
 
     boolean estTouche;
 
-    private double posX;
-    private double posY;
+    private final double posX;
+    private final double  posY;
 
     public BoitesAuxLettres(double x, double y){
         this.boitesAuLettresBlanches = new Image("boite-aux-lettres.png");
         this.boitesAuLettresRouges = new Image("boite-aux-lettres-rouge.png");
         this.boitesAuLettresVertes = new Image("boite-aux-lettres-vert.png");
         this.imgResultante = boitesAuLettresBlanches;
-
         this.estTouche = false;
-
         this.posX = x;
         this.posY = y;
     }
@@ -60,18 +58,12 @@ public class BoitesAuxLettres extends ObjetJeux {
     }
 
     public int touche(boolean estAbonne){
-        if (estTouche) {
-            return 0;
-        }
         this.estTouche = true;
-
         if (estAbonne) {
-            imgResultante = boitesAuLettresRouges;
-            return 1;
-            // perd 2$ avec setter ou boolean
-        } else {
             imgResultante = boitesAuLettresVertes;
-            // gagne 2$ avec setter ou boolean
+            return 1;
+        } else {
+            imgResultante = boitesAuLettresRouges;
             return 0;
         }
 

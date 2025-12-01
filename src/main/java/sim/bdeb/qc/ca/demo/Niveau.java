@@ -34,4 +34,9 @@ public class Niveau {
         return listeParticules;
     }
     // ... getListeMaison(), getObjectifTouches() ...
+
+
+    public void niveauChargement(){}
+    public void niveauEnCours(){}
+    public void niveauFinit(){}
 }
