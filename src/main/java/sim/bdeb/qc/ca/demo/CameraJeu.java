@@ -34,4 +34,7 @@ private double hauteureEcran;
     public double getHauteureEcran() {
         return hauteureEcran;
     }
+
+    public void setX(int i) {
+    }
 }
