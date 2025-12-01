@@ -7,9 +7,9 @@ public class Fenetres extends ObjetJeux {
     private Image fenetresBlanches;
     private Image fenetresVertes;
     private Image fenetresRouges;
-    boolean estTouche;
     private Image imageResultante;
 
+    boolean estTouche;
     private double largeurImg = 159;
     private double hauteurImg = 130;
 
@@ -26,26 +26,16 @@ public class Fenetres extends ObjetJeux {
         this.estTouche = false;
     }
 
-    public boolean isEstTouche() {
-        return estTouche;
-    }
-
-    public void setEstTouche(boolean estTouche) {
-        this.estTouche = estTouche;
-    }
 
     public double getLargeurImg() {
         return largeurImg;
     }
-
     public double getHauteurImg() {
         return hauteurImg;
     }
-
     public double getX() {
         return posX;
     }
-
     public double getY() {
         return posY;
     }
@@ -54,9 +44,6 @@ public class Fenetres extends ObjetJeux {
     public void draw(GraphicsContext context, CameraJeu camera) {
         double ecranX = posX - camera.getPositionX();
         double ecranY = posY;
-
-
-       
         if (posX + largeurImg > 0 && ecranX < camera.getLongeureEcran()) {
             context.drawImage(imageResultante, ecranX, ecranY);
         }
@@ -67,21 +54,17 @@ public class Fenetres extends ObjetJeux {
         return 0;
     }
 
+
+    // si une fenetre est touché le joueur gagne ou perd 2$
     public int touche(boolean estAbonne) {
-
-        if (estTouche) {
-            return 0;
-        }
         this.estTouche = true;
-
         if (estAbonne) {
-            imageResultante = fenetresRouges;
-            return -2;
-            // perd 2$ avec setter ou boolean
+                imageResultante = fenetresRouges;
+                return -2;
         } else {
-            imageResultante = fenetresVertes;
-            // gagne 2$ avec setter ou boolean
-            return 2;
+                imageResultante = fenetresVertes;
+                return 2;
         }
+
     }
 }

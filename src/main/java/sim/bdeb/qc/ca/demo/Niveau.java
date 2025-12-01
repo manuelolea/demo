@@ -48,6 +48,13 @@ public class Niveau {
             listeParticules.add(new ParticulesCharges(rndX,rndY));
         }
     }
+    // ... getListeMaison(), getObjectifTouches() ...
+
+
+    public void niveauChargement(){}
+    public void niveauEnCours(){}
+    public void niveauFinit(){}
+}
 
     public ArrayList<Maison> getListeMaison() {return listeMaison;}
 
