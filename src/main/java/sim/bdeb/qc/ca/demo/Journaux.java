@@ -11,6 +11,7 @@ public class Journaux extends ObjetJeux{
     private double largueurJournal = 52;
     private double hauteurJournal = 31;
 
+    private Point2D accelerationExt = Point2D.ZERO;
     private Point2D position;
     private Point2D vitesse;
     private  double masse;
@@ -55,6 +56,12 @@ public class Journaux extends ObjetJeux{
 
     public double getHauteurJournal() {
         return hauteurJournal;
+    }
+    public double getMasse() {
+        return masse;
+    }
+    public void ajouterAcceleration(Point2D acc){
+        this.accelerationExt = accelerationExt.add(acc);
     }
 
     @Override
