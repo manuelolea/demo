@@ -1,6 +1,11 @@
 package sim.bdeb.qc.ca.demo;
 
+import javafx.geometry.Point2D;
+import javafx.geometry.VPos;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.util.ArrayList;
 public class Partie {
@@ -12,15 +17,24 @@ public class Partie {
     private double hauteurEcran;
     private double largueurEcran;
 
+    private Niveau niveauActuel;
+    private int numeroNiveau = 1;
+
+    private boolean enChargement = true;
+    private double tempsChargement = 3;
+
+    private boolean finDePartie = false;
+    private double tempsFinPartie = 3;
+
     private ArrayList<Journaux> listeJournaux;
     private double masse;
     private double tempsRecharge;
 
-    private ArrayList<Maison> listeMaison;
+    //private ArrayList<Maison> listeMaison;
 
     private int argent = 0;
-    private int nbJournaux = 24;
-    private String chaineAdresse = "";
+    private int nbJournaux = 0;
+    //private String chaineAdresse = "";
 
     public Partie(double largueur, double hauteur){
         this.largueurEcran = largueur;
@@ -34,49 +48,136 @@ public class Partie {
         this.masse = 1 + Math.random();
         this.listeJournaux = new ArrayList<>();
 
-        this.listeMaison = new ArrayList<>();
+        //this.listeMaison = new ArrayList<>();
 
-        genererNiveau();
+        initialiserNiveau(1);
+
     }
-    public void update(double dt){
+    public void initialiserNiveau(int num){
+        this.numeroNiveau = num;
+        this.enChargement = true;
+        this.tempsChargement = 3;
 
+        this.finDePartie = false;
+        this.tempsFinPartie = 3;
+
+        this.camelot.setPosition(180, 436);
+        this.camelot.setVitesse(0,0);
+        this.camera.setX(0);
+
+        this.nbJournaux += 12;
+
+        this.masse = 1 + Math.random();
+
+        this.niveauActuel = new Niveau(num, largueurEcran, hauteurEcran);
+    }
+
+    public void update(double dt) {
+        if (enChargement) {
+            tempsChargement -= dt;
+            if (tempsChargement <= 0) {
+                enChargement = false;
+            }
+            return;
+        }
+
+        if (finDePartie) {
+            tempsFinPartie -= dt;
+            if (tempsFinPartie <= 0) {
+                this.nbJournaux = 0;
+                this.argent = 0;
+                this.listeJournaux.clear();
+                initialiserNiveau(1);
+            }
+            return;
+        }
+
+        if (nbJournaux <= 0 && listeJournaux.isEmpty()) {
+            finDePartie = true;
+            return;
+        }
         camelot.update(dt);
         decors.update(dt);
         camera.update(camelot);
 
         gererLancerJournaux(dt);
 
-        for (int i = listeJournaux.size() - 1; i >= 0 ; i--) {
+        for (int i = listeJournaux.size() - 1; i >= 0; i--) {
             Journaux j = listeJournaux.get(i);
+            if (numeroNiveau >= 2) {
+                Point2D centreJournal = new Point2D(j.getX() + j.getLargueurJournal() / 2,
+                        j.getY() + j.getHauteurJournal() / 2);
+
+                Point2D forceElec = calculerChampsElectrique(centreJournal);
+                Point2D acceleration = forceElec.multiply(1 / j.getMasse());
+                j.ajouterAcceleration(acceleration);
+            }
             j.update(dt);
 
-            boolean journalDetruit = false;
 
-            for (Maison m : listeMaison){
-                boolean maisonAbonnee = m.estAbonne();
-
-                BoitesAuxLettres b = m.getBoitesAuxLettres();
-                if (b != null){
-                    if (intercepte(j, b.getX(),b.getY(),b.getLargueurImg(),b.getHauteurImg())){
-                        int gain = b.touche(maisonAbonnee);
-                        this.argent += gain;
-                        journalDetruit = true;
-                    }
-                }
-                if (!journalDetruit){
-                    for (Fenetres f : m.getFenetres())
-                    if (intercepte(j, f.getX(), f.getY(), f.getLargeurImg(), f.getHauteurImg())){
-                        int gain = f.touche(maisonAbonnee);
-                        this.argent += gain;
-                        journalDetruit = true;
-                        break;
-                    }
-                }
-            }
-            if (journalDetruit || j.estSorti(camera)){
+            if (gererCollision(j) || j.estSorti(camera)) {
                 listeJournaux.remove(i);
             }
         }
+        if (camelot.getX() > niveauActuel.getFinNiveauX()) {
+            initialiserNiveau(numeroNiveau + 1);
+        }
+    }
+
+    private Point2D calculerChampsElectrique(Point2D posJournal){
+        double k = 90;
+        double qJournal = 900;
+        double forceTotalX = 0;
+        double forceTotalY = 0;
+
+        for (ParticulesCharges p : niveauActuel.getListeParticules()) {
+            Point2D posParticule = p.getPosition();
+            double qParticule = p.getCharge();
+
+            double dx = posJournal.getX() - posParticule.getX();
+            double dy = posJournal.getY() - posParticule.getY();
+
+            double distanceCarre = dx * dx + dy * dy;
+            double distance = Math.sqrt(distanceCarre);
+
+            if (distance < 1) distance = 1;
+            if (distanceCarre < 1) distanceCarre = 1;
+
+            double E = (k * Math.abs(qParticule)) / distanceCarre;
+
+            double dirX = dx / distance;
+            double dirY = dy / distance;
+
+            double Ex = E * dirX;
+            double Ey = E * dirY;
+
+            forceTotalX += Ex * qJournal;
+            forceTotalY += Ey * qJournal;
+        }
+        return new Point2D(forceTotalX, forceTotalY);
+    }
+    public boolean gererCollision(Journaux j){
+        for (Maison m : niveauActuel.getListeMaison()) {
+            boolean estAbonne = m.estAbonne();
+
+            BoitesAuxLettres b = m.getBoitesAuxLettres();
+            if (b != null) {
+                if (intercepte(j, b.getX(), b.getY(), b.getLargueurImg(), b.getHauteurImg())) {
+                    int gain = b.touche(estAbonne);
+                    this.argent += gain;
+                    return true;
+                }
+            }
+
+            for (Fenetres f : m.getFenetres()) {
+                if (intercepte(j, f.getX(), f.getY(), f.getLargeurImg(), f.getHauteurImg())) {
+                    int gain = f.touche(estAbonne);
+                    this.argent += gain;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean intercepte(Journaux j, double x, double y, double largueur, double hauteur){
@@ -84,27 +185,53 @@ public class Partie {
     }
 
     public void draw(GraphicsContext context){
-        context.clearRect(0,0,largueurEcran,hauteurEcran);
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, largueurEcran, hauteurEcran);
+
+        if (enChargement) {
+            context.setFill(Color.GREEN);
+            context.setFont(new Font("Arial", 50));
+            context.setTextAlign(TextAlignment.CENTER);
+            context.setTextBaseline(VPos.CENTER);
+            context.fillText("Niveau " + numeroNiveau, largueurEcran / 2, hauteurEcran / 2);
+            return;
+        }
+
+        if (finDePartie) {
+            context.setTextAlign(TextAlignment.CENTER);
+            context.setTextBaseline(VPos.CENTER);
+            context.setFont(new Font("Arial", 40));
+
+            context.setFill(Color.RED);
+            context.fillText("Rupture de stocks", largueurEcran / 2, hauteurEcran / 2 - 40);
+
+            context.setFill(Color.GREEN);
+            context.fillText("Argent collecté : " + argent + "$", largueurEcran / 2, hauteurEcran / 2 + 40);
+            return;
+        }
 
         decors.draw(context,camera);
 
-        for (int i = 0; i < listeMaison.size(); i++) {
-            Maison m = listeMaison.get(i);
+        for (Maison m : niveauActuel.getListeMaison()) {
             m.draw(context,camera);
         }
 
-        for (int i = 0; i < listeJournaux.size(); i++) {
-            Journaux j = listeJournaux.get(i);
+        for (Journaux j : listeJournaux) {
             j.draw(context, camera);
         }
+
+        for (ParticulesCharges p : niveauActuel.getListeParticules()){
+            p.draw(context,camera);
+        }
+
         camelot.draw(context,camera);
-        barreJeu.draw(context, nbJournaux, argent, chaineAdresse);
+        barreJeu.draw(context, nbJournaux, argent, niveauActuel.getChaineAdresse());
     }
     private void gererLancerJournaux(double dt){
         if (tempsRecharge > 0){
             tempsRecharge -= dt;
         }
-        if ((Input.lancerHaut || Input.lancerDroit) && tempsRecharge <= 0){
+        if ((Input.lancerHaut || Input.lancerDroit) && tempsRecharge <= 0 && nbJournaux > 0){
             Journaux journal = new Journaux(camelot, masse, Input.lancerHaut, Input.lancerDroit, Input.force);
             listeJournaux.add(journal);
 
@@ -113,7 +240,8 @@ public class Partie {
         }
 
     }
-    private void genererNiveau(){
+}
+    /*private void genererNiveau(){
         int adresse = 100 + (int)(Math.random() * 850);
         StringBuilder listetemporaire = new StringBuilder();
 
@@ -133,3 +261,4 @@ public class Partie {
         this.chaineAdresse = listetemporaire.toString();
     }
 }
+*/

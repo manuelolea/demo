@@ -116,4 +116,11 @@ public class Camelot extends ObjetJeux{
     }
         return 0;
     }
+
+    public void setPosition(int i, int i1) {
+    }
+
+    public void setVitesse(int i, int i1) {
+    }
+
 }
