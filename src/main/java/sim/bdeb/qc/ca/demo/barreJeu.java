@@ -18,7 +18,6 @@ public class barreJeu {
     public barreJeu(double largueurEcran) {
         this.largeurEcran = largueurEcran;
         this.hauteurBarre = 40;
-
         this.imageArgent = new Image("icone-dollar.png");
         this.imageJournal = new Image("icone-journal.png");
         this.imageMaison = new Image("icone-maison.png");
