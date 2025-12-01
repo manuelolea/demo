@@ -8,11 +8,9 @@ public class Fenetres extends ObjetJeux {
     private Image fenetresVertes;
     private Image fenetresRouges;
     private Image imageResultante;
-
     boolean estTouche;
     private double largeurImg = 159;
     private double hauteurImg = 130;
-
     private double posX;
     private double posY;
 
@@ -25,7 +23,6 @@ public class Fenetres extends ObjetJeux {
         this.imageResultante = fenetresBlanches;
         this.estTouche = false;
     }
-
 
     public double getLargeurImg() {
         return largeurImg;
@@ -40,6 +37,7 @@ public class Fenetres extends ObjetJeux {
         return posY;
     }
 
+    // dessine la fenettre selon la position de la camera
     @Override
     public void draw(GraphicsContext context, CameraJeu camera) {
         double ecranX = posX - camera.getPositionX();
@@ -55,7 +53,7 @@ public class Fenetres extends ObjetJeux {
     }
 
 
-    // si une fenetre est touché le joueur gagne ou perd 2$
+    // gere les gain du joueur si une fenetre est touché dependament de son abonnement
     public int touche(boolean estAbonne) {
         this.estTouche = true;
         if (estAbonne) {

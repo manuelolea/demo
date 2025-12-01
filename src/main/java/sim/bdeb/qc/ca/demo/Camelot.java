@@ -7,29 +7,15 @@ import javafx.scene.image.Image;
 public class Camelot extends ObjetJeux{
     private Image camelot1 = new Image("camelot1.png");
     private Image camelot2 = new Image("camelot2.png");
-
     private double vitesseInitial = 400;
     private double accel = 300;
     private double vitesseMin = 200;
     private double vitesseMax = 600;
     private double gravite = 1500;
-
     private double largueurCamelot = 172;
-    private double hauteurCamelot = 144;
-
-    public double getLargueurCamelot() {
-        return largueurCamelot;
-    }
-
-    public Point2D getVitesse(){
-        return vitesse;
-    }
-
     private Point2D position;
     private Point2D vitesse;
-
     private double temps= 0.0;
-
     private Input input = new Input();
 
     public Camelot(double x, double y){
@@ -37,17 +23,24 @@ public class Camelot extends ObjetJeux{
         this.vitesse = new Point2D(vitesseInitial,0 );
     }
 
+    public double getLargueurCamelot() {
+        return largueurCamelot;
+    }
+    public Point2D getVitesse(){
+        return vitesse;
+    }
+    public Point2D getPosition(){
+        return position;
+    }
 
     public void setInput(Input input) {
         if(input != null){
             this.input = input;
         }
     }
-    public Point2D getPosition(){
-        return position;
-    }
 
     @Override
+    // dessine le camelot au debut du jeu et alterne entre les deux images
     public void draw(GraphicsContext context,  CameraJeu camera) {
     int index = (int) ((temps * 4) % 2);
 
@@ -63,6 +56,7 @@ public class Camelot extends ObjetJeux{
     }
 
     @Override
+    // met a jour la vitesse du camelot selon son acceleration et l'utilisation des touches (classe input)
     public int update(double dt){
         if (dt <= 0){
             return 0;
