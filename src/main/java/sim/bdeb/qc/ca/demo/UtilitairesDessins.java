@@ -1,9 +1,8 @@
 package sim.bdeb.qc.ca.demo;
+
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-
-
 
 /**
  * Classe utilitaire qui fournit une méthode pour dessiner une flèche sur
@@ -13,33 +12,36 @@ public class UtilitairesDessins {
     // Classe de méthodes static seulement, pas d'instances autorisées
     private UtilitairesDessins() {}
 
+    // Clamp maison (0 ≤ valeur ≤ max)
+    private static double clamp(double value, double min, double max) {
+        if (value < min) return min;
+        if (value > max) return max;
+        return value;
+    }
+
     /**
      * Dessine le vecteur fourni à partir d'un certain point sur l'écran.
-     * <p>
-     * Si le vecteur a un module de plus de 80, une longueur maximale de 80 est utilisée
-     * (question d'éviter d'afficher des vecteurs inutilement trop gros sur toute la largeur de l'écran)
-     *
-     * @param origineEcran Point de départ du vecteur (en pixels, sur l'écran)
-     * @param vecteur      Vecteur à dessiner avec une flèche
-     * @param context      Contexte graphique du Canvas
+     * Si le vecteur est trop long, on le tronque à une longueur max.
      */
-   /*public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
-        if (vecteur.getX() != vecteur.getX()) {
-            throw new IllegalArgumentException("Erreur dans les maths, probablement due à une division par zéro");
+    public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
+        if (Double.isNaN(vecteur.getX()) || Double.isNaN(vecteur.getY())) {
+            // Maths foireuses (genre division par 0) -> on skip
+            return;
         }
 
         double longueurMax = 80;
         double forceMax = 80;
 
-        // Calcule la longueur du vecteur comme un pourcentage de la force maximale affichée
-        double pourcentage = clamp(vecteur.magnitude(), 0, forceMax) / forceMax;
+        double magnitude = vecteur.magnitude();
+        if (magnitude == 0) return;
 
-        dessinerVecteur(
-                origineEcran,
-                vecteur.normalize().multiply(pourcentage * longueurMax),
-                context);
+        double pourcentage = clamp(magnitude, 0, forceMax) / forceMax;
+
+        Point2D vecteurAffiche = vecteur.normalize().multiply(pourcentage * longueurMax);
+
+        dessinerVecteur(origineEcran, vecteurAffiche, context);
     }
-*/
+
     private static void dessinerVecteur(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
         final double rayon = 1.5;
         var finEcran = origineEcran.add(vecteur);
@@ -55,8 +57,10 @@ public class UtilitairesDessins {
                 rayon * 2, rayon * 2);
 
         // Magnitude proche de zéro : pas de tête de flèche
-        if (vecteur.dotProduct(vecteur) < rayon * rayon)
+        if (vecteur.dotProduct(vecteur) < rayon * rayon) {
+            context.restore();
             return;
+        }
 
         // Corps de la flèche
         context.strokeLine(
@@ -68,13 +72,10 @@ public class UtilitairesDessins {
         context.translate(finEcran.getX(), finEcran.getY());
         context.rotate(Math.toDegrees(Math.atan2(vecteur.getY(), vecteur.getX())));
         context.fillPolygon(
-                new double[]{
-                        0, 10, 0
-                },
-                new double[]{
-                        -10, 0, 10
-                },
-                3);
+                new double[]{0, 10, 0},
+                new double[]{-10, 0, 10},
+                3
+        );
 
         context.restore();
     }
