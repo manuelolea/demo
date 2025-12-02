@@ -3,6 +3,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
+
+
 /**
  * Classe utilitaire qui fournit une méthode pour dessiner une flèche sur
  * un GraphicsContext2D dans un Canvas JavaFX
@@ -21,7 +23,7 @@ public class UtilitairesDessins {
      * @param vecteur      Vecteur à dessiner avec une flèche
      * @param context      Contexte graphique du Canvas
      */
- /*   public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
+   /*public static void dessinerVecteurForce(Point2D origineEcran, Point2D vecteur, GraphicsContext context) {
         if (vecteur.getX() != vecteur.getX()) {
             throw new IllegalArgumentException("Erreur dans les maths, probablement due à une division par zéro");
         }
@@ -30,7 +32,7 @@ public class UtilitairesDessins {
         double forceMax = 80;
 
         // Calcule la longueur du vecteur comme un pourcentage de la force maximale affichée
-        double pourcentage = Math.clamp(vecteur.magnitude(), 0, forceMax) / forceMax;
+        double pourcentage = clamp(vecteur.magnitude(), 0, forceMax) / forceMax;
 
         dessinerVecteur(
                 origineEcran,
