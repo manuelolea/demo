@@ -111,59 +111,62 @@ public class Partie {
     }
 
     public void update(double dt) {
-        if (enChargement) {
-            tempsChargement -= dt;
-            if (tempsChargement <= 0) {
-                enChargement = false;
+            if (enChargement) {
+                tempsChargement -= dt;
+                if (tempsChargement <= 0) {
+                    enChargement = false;
+                }
+                return;
             }
-            return;
-        }
 
-        if (finDePartie) {
-            tempsFinPartie -= dt;
-            if (tempsFinPartie <= 0) {
-                this.nbJournaux = 0;
-                this.argent = 0;
-                this.listeJournaux.clear();
-                initialiserNiveau(1);
+            if (finDePartie) {
+                tempsFinPartie -= dt;
+                if (tempsFinPartie <= 0) {
+                    this.nbJournaux = 0;
+                    this.argent = 0;
+                    this.listeJournaux.clear();
+                    initialiserNiveau(1);
+                }
+                return;
             }
-            return;
-        }
 
-        if (nbJournaux <= 0 && listeJournaux.isEmpty()) {
-            finDePartie = true;
-            return;
-        }
+            camelot.update(dt);
+            decors.update(dt);
+            camera.update(camelot);
 
-        camelot.update(dt);
-        decors.update(dt);
-        camera.update(camelot);
 
-        gererLancerJournaux(dt);
-
-        for (int i = listeJournaux.size() - 1; i >= 0; i--) {
-            Journaux j = listeJournaux.get(i);
-            if (numeroNiveau >= 2) {
-                Point2D centreJournal = new Point2D(
-                        j.getX() + j.getLargueurJournal() / 2,
-                        j.getY() + j.getHauteurJournal() / 2
-                );
-
-                Point2D forceElec = calculerChampsElectrique(centreJournal);
-                Point2D acceleration = forceElec.multiply(1.0 / j.getMasse());
-                j.ajouterAcceleration(acceleration);
+            if (camelot.getPosition().getX() > this.finNiveauX) {
+                initialiserNiveau(numeroNiveau + 1);
+                return;
             }
-            j.update(dt);
 
-            if (gererCollision(j) || j.estSorti(camera)) {
-                listeJournaux.remove(i);
+            gererLancerJournaux(dt);
+
+            for (int i = listeJournaux.size() - 1; i >= 0; i--) {
+                Journaux j = listeJournaux.get(i);
+
+                if (numeroNiveau >= 2) {
+                    Point2D centreJournal = new Point2D(
+                            j.getX() + j.getLargueurJournal() / 2,
+                            j.getY() + j.getHauteurJournal() / 2
+                    );
+
+                    Point2D forceElec = calculerChampsElectrique(centreJournal);
+                    Point2D acceleration = forceElec.multiply(1.0 / j.getMasse());
+                    j.ajouterAcceleration(acceleration);
+                }
+
+                j.update(dt);
+
+                if (gererCollision(j) || j.estSorti(camera)) {
+                    listeJournaux.remove(i);
+                }
+            }
+
+            if (nbJournaux <= 0 && listeJournaux.isEmpty()) {
+                finDePartie = true;
             }
         }
-
-        if (camelot.getX() > this.finNiveauX) {
-            initialiserNiveau(numeroNiveau + 1);
-        }
-    }
 
     private Point2D calculerChampsElectrique(Point2D posJournal) {
         double k = 90;

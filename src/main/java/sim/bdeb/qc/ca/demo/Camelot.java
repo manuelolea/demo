@@ -32,6 +32,12 @@ public class Camelot extends ObjetJeux{
     public Point2D getPosition(){
         return position;
     }
+    public void setPosition(double x, double y){
+        this.position = new Point2D(x,y);
+    }
+    public void setVitesse(double vx, double vy){
+        this.vitesse = new Point2D(vx,vy);
+    }
 
     public void setInput(Input input) {
         if(input != null){
@@ -109,12 +115,6 @@ public class Camelot extends ObjetJeux{
         vitesse = new Point2D(vitesse.getX(), 0);
     }
         return 0;
-    }
-
-    public void setPosition(int i, int i1) {
-    }
-
-    public void setVitesse(int i, int i1) {
     }
 
 }
