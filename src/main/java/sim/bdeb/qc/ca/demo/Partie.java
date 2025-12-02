@@ -34,6 +34,7 @@ public class Partie {
     private int argent = 0;
     private int nbJournaux = 0;
     private String chaineAdresse = "";
+    private boolean debogageEnCours = false;
 
     private boolean D = false;
     private boolean Q = false;
@@ -74,14 +75,7 @@ public class Partie {
 
         this.nbJournaux += 12;
         this.masse = 1 + Math.random();
-      /*  if(Input.ajoutJournaux){
-            for(int i = 1;i<=10;i++){
-                Journaux journal = new Journaux(camelot, masse, Input.lancerHaut, Input.lancerDroit, Input.force);
-                listeJournaux.add(journal);
-            }
-        }
 
-       */
         listeMaison.clear();
         listeParticule.clear();
 
@@ -149,6 +143,14 @@ public class Partie {
                 }
                 return;
             }
+            if(Input.debogage){
+                if(debogageEnCours){
+                    this.debogageEnCours = false;
+                }else {
+                    this.debogageEnCours = true;
+                }
+            }
+            gestionJournaux();
 
             if (Input.debogage && !D) {
             afficherDebug = !afficherDebug;  // toggle
@@ -430,4 +432,4 @@ public class Partie {
             tempsRecharge = 0.5;
         }
     }
-}
+
