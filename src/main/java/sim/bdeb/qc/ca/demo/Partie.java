@@ -14,23 +14,36 @@ public class Partie {
     private Decors decors;
     private CameraJeu camera;
     private BarreJeu barreJeu;
+
     private double hauteurEcran;
     private double largueurEcran;
+
     private int numeroNiveau = 1;
     private double finNiveauX;
     private boolean enChargement = true;
     private double tempsChargement = 3;
     private boolean finDePartie = false;
     private double tempsFinPartie = 3;
-    private ArrayList<Journaux> listeJournaux;
-    private double masse;
-    private double tempsRecharge;
+
     private ArrayList<Maison> listeMaison;
     private ArrayList<ParticulesCharges> listeParticule;
+    private ArrayList<Journaux> listeJournaux;
+
+    private double masse;
+    private double tempsRecharge;
     private int argent = 0;
     private int nbJournaux = 0;
     private String chaineAdresse = "";
     private boolean debogageEnCours = false;
+
+    private boolean D = false;
+    private boolean Q = false;
+    private boolean K = false;
+    private boolean L = false;
+    private boolean F = false;
+    private boolean I = false;
+    private boolean afficherChamp = false;
+    private boolean afficherDebug = false;
 
     public Partie(double largueur, double hauteur) {
         this.largueurEcran = largueur;
@@ -139,12 +152,77 @@ public class Partie {
             }
             gestionJournaux();
 
+            if (Input.debogage && !D) {
+            afficherDebug = !afficherDebug;  // toggle
+            D = true;
+            }
+            if (!Input.debogage) {
+            D = false;
+            }
+
+
+            if (Input.ajoutJournaux && !Q) {
+            nbJournaux += 10;
+            Q = true;
+            }
+            if (!Input.ajoutJournaux) {
+            Q = false;
+            }
+
+            if (Input.retraitJournaux && !K) {
+            nbJournaux = 0;
+            listeJournaux.clear();
+            K = true;
+            }
+            if (!Input.retraitJournaux) {
+            K = false;
+            }
+            if (Input.prochainNiveau && !L) {
+            L = true;
+
+            initialiserNiveau(numeroNiveau + 1);
+            return; // on ne fait rien d'autre ce frame
+            }
+            if (!Input.prochainNiveau) {
+            L = false;
+            }
+
+            if (Input.flechesChampElectrique && !F) {
+            afficherChamp = !afficherChamp;  // toggle
+            F = true;
+            }
+            if (!Input.flechesChampElectrique) {
+            F = false;
+            }
+
+            if (Input.particuleTest && !I) {
+            I = true;
+
+            listeParticule.clear();
+
+            double yHaut = 10;
+            double yBas = hauteurEcran - 10;
+
+            double cameraX = camera.getPositionX();
+            double debutX = cameraX;
+            double finX = cameraX + largueurEcran;
+
+
+            for (double x = debutX; x <= finX; x += 50) {
+                listeParticule.add(new ParticulesCharges(x, yHaut));
+                listeParticule.add(new ParticulesCharges(x, yBas));
+                }
+            }
+            if (!Input.particuleTest) {
+            I = false;
+            }
+
             camelot.update(dt);
             decors.update(dt);
             camera.update(camelot);
 
 
-            if (camelot.getPosition().getX() > this.finNiveauX || Input.prochainNiveau) {
+            if (camelot.getPosition().getX() > this.finNiveauX) {
                 initialiserNiveau(numeroNiveau + 1);
                 return;
             }
@@ -277,20 +355,71 @@ public class Partie {
             p.draw(context, camera);
         }
 
+        if (afficherChamp && numeroNiveau >= 2){
+            dessinerChampElectrique(context);
+        }
+
         for (Journaux j : listeJournaux) {
             j.draw(context, camera);
         }
 
         camelot.draw(context, camera);
         barreJeu.draw(context, nbJournaux, argent, chaineAdresse);
-        if(debogageEnCours){
-            double ligneDebug = this.largueurEcran * 0.20;
-            context.setStroke(Color.YELLOW);
-            context.setLineWidth(2);
-            context.strokeLine(ligneDebug, 0, ligneDebug, this.hauteurEcran);
+
+        if (afficherDebug){
+            dessinerDebug(context);
         }
     }
 
+    private void dessinerDebug(GraphicsContext context) {
+        context.setStroke(Color.YELLOW);
+        context.setLineWidth(2);
+
+
+        for (Maison m : listeMaison) {
+            BoitesAuxLettres b = m.getBoitesAuxLettres();
+            if (b != null) {
+                double xEcran = b.getX() - camera.getPositionX();
+                double yEcran = b.getY();
+                context.strokeRect(xEcran, yEcran, b.getLargueurImg(), b.getHauteurImg());
+            }
+
+            for (Fenetres f : m.getFenetres()) {
+                double xEcran = f.getX() - camera.getPositionX();
+                double yEcran = f.getY();
+                context.strokeRect(xEcran, yEcran, f.getLargeurImg(), f.getHauteurImg());
+            }
+        }
+
+        for (Journaux j : listeJournaux) {
+            double xEcran = j.getX() - camera.getPositionX();
+            double yEcran = j.getY();
+            context.strokeRect(xEcran, yEcran, j.getLargueurJournal(), j.getHauteurJournal());
+        }
+
+        double xLigne = largueurEcran * 0.2;
+        context.strokeLine(xLigne, 0, xLigne, hauteurEcran);
+    }
+
+    private void dessinerChampElectrique(GraphicsContext context) {
+        if (listeParticule.isEmpty()) return;
+
+        double pas = 50;
+
+        for (double xEcran = 0; xEcran < largueurEcran; xEcran += pas) {
+            for (double yEcran = 0; yEcran < hauteurEcran; yEcran += pas) {
+
+                double xMonde = xEcran + camera.getPositionX();
+                double yMonde = yEcran;
+
+                Point2D positionMonde = new Point2D(xMonde, yMonde);
+                Point2D positionEcran = new Point2D(xEcran, yEcran);
+
+                Point2D force = calculerChampsElectrique(positionMonde);
+                UtilitairesDessins.dessinerVecteurForce(positionEcran, force, context);
+            }
+        }
+    }
     private void gererLancerJournaux(double dt) {
         if (tempsRecharge > 0) {
             tempsRecharge -= dt;
@@ -304,13 +433,3 @@ public class Partie {
         }
     }
 
-    private void gestionJournaux() {
-        if (Input.ajoutJournaux) {
-            this.nbJournaux += 10;
-            Input.ajoutJournaux=false;
-        }
-        if (Input.retraitJournaux) {
-            this.nbJournaux = 0;
-        }
-    }
-}
