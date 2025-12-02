@@ -30,6 +30,7 @@ public class Partie {
     private int argent = 0;
     private int nbJournaux = 0;
     private String chaineAdresse = "";
+    private boolean debogageEnCours = false;
 
     public Partie(double largueur, double hauteur) {
         this.largueurEcran = largueur;
@@ -61,14 +62,7 @@ public class Partie {
 
         this.nbJournaux += 12;
         this.masse = 1 + Math.random();
-      /*  if(Input.ajoutJournaux){
-            for(int i = 1;i<=10;i++){
-                Journaux journal = new Journaux(camelot, masse, Input.lancerHaut, Input.lancerDroit, Input.force);
-                listeJournaux.add(journal);
-            }
-        }
 
-       */
         listeMaison.clear();
         listeParticule.clear();
 
@@ -136,6 +130,14 @@ public class Partie {
                 }
                 return;
             }
+            if(Input.debogage){
+                if(debogageEnCours){
+                    this.debogageEnCours = false;
+                }else {
+                    this.debogageEnCours = true;
+                }
+            }
+            gestionJournaux();
 
             camelot.update(dt);
             decors.update(dt);
@@ -281,6 +283,12 @@ public class Partie {
 
         camelot.draw(context, camera);
         barreJeu.draw(context, nbJournaux, argent, chaineAdresse);
+        if(debogageEnCours){
+            double ligneDebug = this.largueurEcran * 0.20;
+            context.setStroke(Color.YELLOW);
+            context.setLineWidth(2);
+            context.strokeLine(ligneDebug, 0, ligneDebug, this.hauteurEcran);
+        }
     }
 
     private void gererLancerJournaux(double dt) {
@@ -293,6 +301,16 @@ public class Partie {
 
             nbJournaux--;
             tempsRecharge = 0.5;
+        }
+    }
+
+    private void gestionJournaux() {
+        if (Input.ajoutJournaux) {
+            this.nbJournaux += 10;
+            Input.ajoutJournaux=false;
+        }
+        if (Input.retraitJournaux) {
+            this.nbJournaux = 0;
         }
     }
 }

@@ -67,4 +67,8 @@ public class Maison {
             f.draw(context,camera);
         }
     }
+
+    public void drawDebug(GraphicsContext context, CameraJeu camera){
+
+    }
 }
