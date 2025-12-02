@@ -15,6 +15,7 @@ public class Input {
     public static boolean retraitJournaux = false;
     public static boolean prochainNiveau = false;
     public static boolean flechesChampElectrique = false;
+    public static boolean particuleTest = false;
 
     public static void initialiser(Scene scene) {
         // gestion des touches pressed
@@ -24,14 +25,19 @@ public class Input {
                 case LEFT -> gauche = true;// rester vitesse statique du camelot
                 case RIGHT -> droite =true;// acceleration du camelot
                 case SPACE,UP -> saut = true;// saut du camelot
+
                 case Z -> lancerHaut = true;// lancer journeau vers le haut
                 case X -> lancerDroit = true;// lancer journeau vers l'avant
                 case SHIFT -> force = true;// mode force
+
                 case D -> debogage = true;// mode debogage
                 case Q -> ajoutJournaux = true;
                 case K -> retraitJournaux = true;
                 case L -> prochainNiveau = true;
                 case F -> flechesChampElectrique = true;
+                case I -> particuleTest = true;
+
+
             }
         });
 
@@ -42,14 +48,17 @@ public class Input {
                 case LEFT -> gauche = false;
                 case RIGHT -> droite = false;
                 case SPACE,UP -> saut = false;
+
                 case Z -> lancerHaut = false;
                 case X -> lancerDroit = false;
                 case SHIFT -> force = false;
+
                 case D -> debogage = false;
                 case Q -> ajoutJournaux = false;
                 case K -> retraitJournaux = false;
                 case L -> prochainNiveau = false;
                 case F -> flechesChampElectrique = false;
+                case I -> particuleTest = true;
             }
         });
 
