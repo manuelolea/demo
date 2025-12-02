@@ -59,8 +59,15 @@ public class Journaux extends ObjetJeux{
 
     @Override
     public int update(double dt){
-        double vy = vitesse.getY() + (gravite * dt);
-        double vx = vitesse.getX();
+        if (dt <= 0){
+            return 0;
+        }
+        double ax = accelerationExt.getX();
+        double ay = accelerationExt.getY() + gravite;
+
+        double vx = vitesse.getX() + ax * dt;
+        double vy = vitesse.getY() + ay * dt;
+
         this.vitesse = new Point2D(vx,vy);
         /*Limite la vitesse du journal
           Verifie que le module du vecteur journal ne depasse pas 1500px/s
@@ -69,7 +76,9 @@ public class Journaux extends ObjetJeux{
         if (this.vitesse.magnitude() > vitesseMax){
             this.vitesse = this.vitesse.multiply(vitesseMax/this.vitesse.magnitude());
         }
+
         this.position = this.position.add(this.vitesse.multiply(dt));
+        this.accelerationExt = Point2D.ZERO;
         return 0;
     }
 
