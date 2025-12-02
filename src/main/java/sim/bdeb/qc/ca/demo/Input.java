@@ -7,10 +7,14 @@ public class Input {
     public static boolean gauche = false;
     public static boolean droite = false;
     public static boolean saut = false;
-
     public static boolean lancerHaut = false;
     public static boolean lancerDroit = false;
     public static boolean force = false;
+    public static boolean debogage = false;
+    public static boolean ajoutJournaux = false;
+    public static boolean retraitJournaux = false;
+    public static boolean prochainNiveau = false;
+    public static boolean flechesChampElectrique = false;
 
     public static void initialiser(Scene scene) {
         // gestion des touches pressed
@@ -23,6 +27,11 @@ public class Input {
                 case Z -> lancerHaut = true;// lancer journeau vers le haut
                 case X -> lancerDroit = true;// lancer journeau vers l'avant
                 case SHIFT -> force = true;// mode force
+                case D -> debogage = true;// mode debogage
+                case Q -> ajoutJournaux = true;
+                case K -> retraitJournaux = true;
+                case L -> prochainNiveau = true;
+                case F -> flechesChampElectrique = true;
             }
         });
 
@@ -33,11 +42,14 @@ public class Input {
                 case LEFT -> gauche = false;
                 case RIGHT -> droite = false;
                 case SPACE,UP -> saut = false;
-
                 case Z -> lancerHaut = false;
                 case X -> lancerDroit = false;
-
                 case SHIFT -> force = false;
+                case D -> debogage = false;
+                case Q -> ajoutJournaux = false;
+                case K -> retraitJournaux = false;
+                case L -> prochainNiveau = false;
+                case F -> flechesChampElectrique = false;
             }
         });
 

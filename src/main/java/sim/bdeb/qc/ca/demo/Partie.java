@@ -61,7 +61,14 @@ public class Partie {
 
         this.nbJournaux += 12;
         this.masse = 1 + Math.random();
+      /*  if(Input.ajoutJournaux){
+            for(int i = 1;i<=10;i++){
+                Journaux journal = new Journaux(camelot, masse, Input.lancerHaut, Input.lancerDroit, Input.force);
+                listeJournaux.add(journal);
+            }
+        }
 
+       */
         listeMaison.clear();
         listeParticule.clear();
 
@@ -135,7 +142,7 @@ public class Partie {
             camera.update(camelot);
 
 
-            if (camelot.getPosition().getX() > this.finNiveauX) {
+            if (camelot.getPosition().getX() > this.finNiveauX || Input.prochainNiveau) {
                 initialiserNiveau(numeroNiveau + 1);
                 return;
             }
