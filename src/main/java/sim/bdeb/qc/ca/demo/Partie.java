@@ -150,7 +150,6 @@ public class Partie {
                     this.debogageEnCours = true;
                 }
             }
-            gestionJournaux();
 
             if (Input.debogage && !D) {
             afficherDebug = !afficherDebug;  // toggle
@@ -432,4 +431,5 @@ public class Partie {
             tempsRecharge = 0.5;
         }
     }
+}
 
